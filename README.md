@@ -26,4 +26,4 @@ Early stage. The core methodology is complete. Platform-specific implementations
 
 ## License
 
-[TODO: Add license]
+[MIT](LICENSE)
