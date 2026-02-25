@@ -6,6 +6,13 @@ A toolkit of AI instructions for improving the quality of responses with financi
 
 Most AI assistants give generic financial guidance. This toolkit provides a structured methodology that teaches AI to ask the right questions, gather personal context, and deliver advice tailored to the user's actual situation.
 
+## Philosophy
+
+- **Harm Reduction**: AI isn't going away. Even if Anthropic and OpenAI go bankrupt tomorrow, AI is here to stay. Rather than teach abstinence DARE style, help people do better with what they have while encouraging safer alternatives.
+- **Inherited Security Rules**: No handrolling permissions or guidelines. These instructions enhance the models as is. It takes no responsibility for security guardrails in the responses or lack thereof.
+- **No Strings Attached**: Go do what you want with it. Download it, remake it, whatever. 
+- **Contributors Welcome**: Whether you're just trying it out or have some domain expertise, happy to have help.
+
 ## Goals
 
 - **Context-first responses** — Gather relevant financial details before answering, not after
