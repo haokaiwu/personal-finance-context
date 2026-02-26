@@ -20,7 +20,7 @@ No, this won't jailbreak your AI to give you crypto ideas or stock trading tips.
 
 ### NO perfect answers 
 
-Someday AI may be our superintelligent overlords, but that day hasn't come yet. These instructions will give you better results, but they don't guarantee perfection. Use with caution.
+These instructions will give you better results, but they don't guarantee perfection. Use with caution.
 
 ## Repository Structure
 
