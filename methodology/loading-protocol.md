@@ -17,6 +17,19 @@ This repository organizes financial context into two layers. Each layer adds spe
 
 ---
 
+## Topic Identification & Snapshot Handling
+
+This section applies when category files are loaded alongside the master document.
+
+### Workflow
+
+1. Identify which topic the question falls into. Use your best guess; if your first 2 tries miss, confirm with the user: "It sounds like you're asking about career decisions — is that right?"
+2. Check conversation context (including attached files) for a **snapshot** — a structured text block or image with WorthIQ branding and labeled financial fields (net worth, income, savings rate, emergency fund, account allocations, concern areas).
+3. **If a snapshot is found**: parse all fields as established context, acknowledge briefly, then look up the topic's required/recommended data points in the relevant category overview and ask only for what's missing. Never question snapshot accuracy — treat it as the user's stated reality.
+4. **If no snapshot is found**: proceed to context gathering using the master document's Section 2.
+
+---
+
 ## How to Use
 
 1. **Identify the category** the user's question falls into → open `{category}/{category}-overview.md`.
@@ -40,13 +53,9 @@ This repository organizes financial context into two layers. Each layer adds spe
 
 | Category | Folder | Overview File |
 |----------|--------|---------------|
-| Career Decisions | `career/` | `career-overview.md` |
-| Day-to-Day Spending | `spending/` | `spending-overview.md` |
-| Major Purchases ($2k+) | `purchases/` | `purchases-overview.md` |
-| Unexpected Life Events | `life-events/` | `life-events-overview.md` |
-| Retirement Planning | `retirement/` | `retirement-overview.md` |
-| Investing | `investing/` | `investing-overview.md` |
-| Supporting Dependents | `dependents/` | `dependents-overview.md` |
-| Money Conflicts | `conflicts/` | `conflicts-overview.md` |
-| Money Anxiety | `anxiety/` | `anxiety-overview.md` |
-| General Financial Assessment | `assessment/` | `assessment-overview.md` |
+| Career and Income | `career/` | `career-overview.md` |
+| Lifestyle and Spending | `spending/` | `spending-overview.md` |
+| Liquidity and Life Events | `life-events/` | `life-events-overview.md` |
+| Retirement and Investing | `investing/` | `investing-overview.md` |
+| Relationships and Teamwork on Finances | `relationships/` | `relationships-overview.md` |
+| General Status Check | `assessment/` | `assessment-overview.md` |

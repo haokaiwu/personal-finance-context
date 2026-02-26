@@ -1,6 +1,6 @@
-# Career Decisions
+# Career and Income
 
-> This is the category overview for Career Decisions. See [loading-protocol.md](../loading-protocol.md) for how layers combine.
+> This is the category overview for Career and Income. See [loading-protocol.md](../loading-protocol.md) for how layers combine.
 
 **Scope explainer**: This topic covers income trajectory and work-choice decisions with financial implications (job changes, promotions, relocation, sabbaticals, upskilling, and role trade-offs).
 
@@ -41,4 +41,4 @@
 
 ## Available Scenarios
 
-- [Changing Jobs](changing-jobs.md) — Evaluating a job switch including comp comparison, transition costs, and career trajectory trade-offs.
+No scenario files are available yet for this category.

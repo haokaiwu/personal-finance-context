@@ -1,6 +1,6 @@
-# General Financial Assessment
+# General Status Check
 
-> This is the category overview for General Financial Assessment. See [loading-protocol.md](../loading-protocol.md) for how layers combine.
+> This is the category overview for General Status Check. See [loading-protocol.md](../loading-protocol.md) for how layers combine.
 
 **Scope explainer**: This topic covers broad status checks, financial prioritization, and second-opinion requests when no single narrow topic dominates.
 
@@ -41,4 +41,4 @@
 
 ## Available Scenarios
 
-- [Post-College Financial Setup](post-college-financial-setup.md) — Building a financial foundation after graduation including debt prioritization, first budget, and account setup.
+No scenario files are available yet for this category.

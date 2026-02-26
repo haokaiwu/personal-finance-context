@@ -6,18 +6,18 @@
 
 This methodology has two functional layers:
 
-- **Core instructions (Sections 1-4)**: Activation criteria, topic identification, snapshot handling, context-gathering behavior, response philosophy, hard rules, tone, and edge cases. These are process instructions — they tell the AI *how* to behave.
-- **Topic reference (category folders)**: Per-topic scope, required/recommended data points, conversation guidance, red flags, and example exchanges organized in category folders with overview and scenario files. This is reference data — it tells the AI *what* to ask and *what* to watch for within each topic. See [loading-protocol.md](loading-protocol.md) for how layers combine.
+- **Core instructions (Sections 1-3)**: Activation criteria, context-gathering behavior (with general fallback data points, red flags, and conversation guidance), response philosophy, tone, and edge cases. These are process instructions — they tell the AI *how* to behave.
+- **Topic reference (category folders)**: Per-topic scope, required/recommended data points, conversation guidance, red flags, and example exchanges organized in category folders with overview and scenario files. This is reference data — it tells the AI *what* to ask and *what* to watch for within each topic. See [loading-protocol.md](loading-protocol.md) for how layers combine and for the topic identification and snapshot handling workflow.
 
 The core instructions depend on the topic reference at three points:
 
 | Dependency | Where | Risk if topic reference is unavailable |
 |---|---|---|
-| **Data-point lookup** | Section 2 (snapshot comparison), Section 3 (context gathering) | **High.** AI improvises what to ask instead of following structured data points. Methodology degrades to generic context-gathering. |
-| **Red-flag detection** | Section 4 ("Do no harm" tenet) | **Medium.** AI catches severe cases through general judgment but misses subtler structured triggers (e.g., concentrated portfolio, high DTI). |
-| **Conversation guidance** | Section 3 (topic-specific phrasing/framing) | **Low.** AI falls back on Section 3's general conversation style. Quality degrades gracefully. |
+| **Data-point lookup** | `loading-protocol.md` (snapshot handling), Section 2 (context gathering) | **Medium.** Section 2 provides general data points as a fallback. AI still gathers useful context but is less targeted without topic-specific data points. |
+| **Red-flag detection** | Section 3 ("Know your limits" tenet) | **Medium.** Section 2 provides general red flags. AI catches severe cases but misses subtler structured triggers (e.g., concentrated portfolio, high DTI). |
+| **Conversation guidance** | Section 2 (conversation guidance) | **Low.** Section 2 includes general conversation guidance. Quality degrades gracefully without topic-specific phrasing. |
 
-To reduce synchronous dependency, the core instructions use the phrase **"topic reference"** instead of a hard section number. This means the topic reference can live in the same file, a separate uploaded file, or category folders — the instructions work regardless.
+To reduce synchronous dependency, the core instructions check whether topic-specific files are loaded and fall back to general data points, red flags, and conversation guidance in Section 2 if not. Topic identification and snapshot handling are documented in [loading-protocol.md](loading-protocol.md), which is loaded alongside category files.
 
 ### Deployment scenarios
 
@@ -38,19 +38,19 @@ Use when the platform can handle the full document in one place.
 Use when the platform has a short instruction limit but supports attached/uploaded files.
 
 **Claude Skill**
-- Sections 1-4 go into SKILL.md body (~135 lines, well within 500-line limit).
+- Sections 1-3 go into SKILL.md body (~120 lines, well within 500-line limit).
 - Category folders (with overview and scenario files) go into a `references/` subdirectory, preserving the folder structure. Claude loads resources on demand.
 - Frontmatter: `name` ≤64 chars, `description` ≤200 chars.
-- **Dependency handling**: Claude Skills automatically surface resources when relevant. The "look up the topic reference" language in Sections 2-3 aligns with this behavior. Lowest-risk split.
+- **Dependency handling**: Claude Skills automatically surface resources when relevant. The topic identification workflow in `loading-protocol.md` and the fallback guidance in Section 2 align with this behavior. Lowest-risk split.
 
 **Custom GPT (system prompt + knowledge file)**
-- Sections 1-4 go into the system prompt (~7,500 chars, within the ~8,000 char limit).
+- Sections 1-3 go into the system prompt (~7,500 chars, within the ~8,000 char limit).
 - Full master document (or category overview and scenario files combined) uploaded as a knowledge file.
 - Add to the end of the system prompt: "When you identify the user's topic, search the uploaded knowledge file for that topic's required data points, recommended data points, conversation guidance, and red flags before asking follow-up questions."
-- **Dependency handling**: GPTs search knowledge files reactively. The explicit retrieval instruction in Sections 2-3 helps, but adding the system-prompt reminder above makes retrieval more reliable.
+- **Dependency handling**: GPTs search knowledge files reactively. The explicit retrieval instruction in Section 2 helps, but adding the system-prompt reminder above makes retrieval more reliable.
 
 **Claude / ChatGPT Project instructions + project files**
-- Same pattern as Custom GPT. Sections 1-4 in project instructions, category files as project files.
+- Same pattern as Custom GPT. Sections 1-3 in project instructions, category files as project files.
 - Project-attached files are generally available in context automatically, making this more reliable than knowledge-file search.
 
 #### Compressed deployments (heavily reduced)
@@ -58,7 +58,7 @@ Use when the platform has a short instruction limit but supports attached/upload
 Use when the platform allows very limited instruction space and no file uploads.
 
 **ChatGPT / Grok Custom Instructions (~1,500 chars)**
-- Consolidate Sections 1-4 into a single compressed block. Preserve the Core Philosophy Tenets in full — do not compress or paraphrase them.
+- Consolidate Sections 1-3 into a single compressed block. Preserve the Core Philosophy Tenets in full — do not compress or paraphrase them.
 - For topic coverage: include only the **scope explainer** and **required data points** for each topic. Drop recommended data points, conversation guidance, red flags, and examples.
 - Compress everything else to essentials: 1 sentence on purpose, 3-4 key behavioral rules (ask before answering, max 3 questions per message, show trade-offs, quantify), tone reminder.
 - This format delivers a meaningfully structured version of the methodology — the AI will know *what* to ask for each topic and *how* to think about responses — but without the full conversation guidance, red flags, or recommended data points.
