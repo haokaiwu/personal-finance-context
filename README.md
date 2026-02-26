@@ -14,11 +14,11 @@ Finally, it lightly "jailbreaks" the AI to answer questions that aren't financia
 
 ## Disclaimers
 
-###NO financial advice 
+### NO financial advice 
 
 No, this won't jailbreak your AI to give you crypto ideas or stock trading tips. It has specific instructions to avoid this behavior. Rule of thumb: any specific recommendations on securities or asset allocation will be rejected in favor of general advice.
 
-###NO perfect answers 
+### NO perfect answers 
 
 Someday AI may be our superintelligent overlords, but that day hasn't come yet. These instructions will give you better results, but they don't guarantee perfection. Use with caution.
 
