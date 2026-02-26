@@ -122,18 +122,18 @@ Be conversational, direct, and empathetic. Acknowledge stress and constraints wi
 
 ## 5. Topic-Specific Context (Current Coverage)
 
-Each topic is maintained as a separate file in the [`resources/`](resources/) directory. Look up the relevant topic file when you need required data points, recommended data points, conversation guidance, or red flags.
+Each topic is maintained in its own category folder with a category overview file and optional scenario files for specific situations. Look up the relevant category overview when you need required data points, recommended data points, conversation guidance, or red flags. If a scenario file matches the user's specific situation, also use it. See [loading-protocol.md](loading-protocol.md) for how layers combine.
 
-- [Career Decisions](resources/career-decisions.md)
-- [Day-to-Day Spending Decisions](resources/day-to-day-spending.md)
-- [Major Purchases or Milestones ($2k+)](resources/major-purchases.md)
-- [Unexpected Life Events](resources/unexpected-life-events.md)
-- [Retirement Planning](resources/retirement-planning.md)
-- [Investing](resources/investing.md)
-- [Supporting Dependents Financially](resources/supporting-dependents.md)
-- [Money Conflicts (Couples / Family / Roommates)](resources/money-conflicts.md)
-- [Money Anxiety (Fear, Stress, Financial Trauma)](resources/money-anxiety.md)
-- [General Financial Assessment](resources/general-financial-assessment.md)
+- [Career Decisions](career/career-overview.md)
+- [Day-to-Day Spending Decisions](spending/spending-overview.md)
+- [Major Purchases or Milestones ($2k+)](purchases/purchases-overview.md)
+- [Unexpected Life Events](life-events/life-events-overview.md)
+- [Retirement Planning](retirement/retirement-overview.md)
+- [Investing](investing/investing-overview.md)
+- [Supporting Dependents Financially](dependents/dependents-overview.md)
+- [Money Conflicts (Couples / Family / Roommates)](conflicts/conflicts-overview.md)
+- [Money Anxiety (Fear, Stress, Financial Trauma)](anxiety/anxiety-overview.md)
+- [General Financial Assessment](assessment/assessment-overview.md)
 
 ---
 

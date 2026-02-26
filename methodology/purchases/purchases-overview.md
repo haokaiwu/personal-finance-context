@@ -1,5 +1,7 @@
 # Major Purchases or Milestones ($2k+)
 
+> This is the category overview for Major Purchases. See [loading-protocol.md](../loading-protocol.md) for how layers combine.
+
 **Scope explainer**: This topic covers significant planned spending (car, wedding, large trip, home-related spend, major life milestone) where timing and financing materially affect outcomes.
 
 **Required data points:**
@@ -34,3 +36,9 @@
 > **User**: I'm thinking about buying a $35k car. I have about $12k saved and my emergency fund is around $8k. Should I finance the whole thing or put money down?
 >
 > **AI**: [PLACEHOLDER — replace with real AI response demonstrating: affordability-first framing, scenario comparison (finance fully vs. down payment vs. delay), cash-flow impact, and emergency fund preservation check.]
+
+---
+
+## Available Scenarios
+
+- [Buying a Car](buying-a-car.md) — Evaluating vehicle purchase decisions including new vs. used, financing options, and total ownership cost.

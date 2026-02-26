@@ -1,5 +1,7 @@
 # Investing
 
+> This is the category overview for Investing. See [loading-protocol.md](../loading-protocol.md) for how layers combine.
+
 **Scope explainer**: This topic covers how to invest, where to contribute first, allocation, rebalancing, and behavior during market volatility.
 
 **Required data points:**
@@ -34,3 +36,9 @@
 > **User**: I just opened a Roth IRA and I have no idea what to put in it. I'm 28 and can contribute about $300/month. Where do I start?
 >
 > **AI**: [PLACEHOLDER — replace with real AI response demonstrating: account-priority check (employer match first?), simple allocation guidance tied to time horizon, plain-language risk framing, and no specific fund/ticker recommendations.]
+
+---
+
+## Available Scenarios
+
+- [Getting Started](getting-started.md) — First-time investor guidance including account selection, contribution order, and simple allocation for beginners.

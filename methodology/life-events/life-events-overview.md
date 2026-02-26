@@ -1,5 +1,7 @@
 # Unexpected Life Events
 
+> This is the category overview for Unexpected Life Events. See [loading-protocol.md](../loading-protocol.md) for how layers combine.
+
 **Scope explainer**: This topic covers sudden financial shocks or windfalls (job loss, medical bill, divorce, death in family, inheritance, legal/urgent obligations) requiring triage and sequence.
 
 **Required data points:**
@@ -34,3 +36,9 @@
 > **User**: I just got laid off last week. I have maybe $6k in checking and about $1,800/month in fixed bills. What should I do first?
 >
 > **AI**: [PLACEHOLDER — replace with real AI response demonstrating: stabilization-first approach, 48-hour / 30-day / 90-day sequencing, calm directive tone, and simple next steps without overloading options.]
+
+---
+
+## Available Scenarios
+
+- [Job Loss](job-loss.md) — Navigating sudden unemployment including cash runway, benefits continuity, and job search financial planning.

@@ -7,7 +7,7 @@
 This methodology has two functional layers:
 
 - **Core instructions (Sections 1-4)**: Activation criteria, topic identification, snapshot handling, context-gathering behavior, response philosophy, hard rules, tone, and edge cases. These are process instructions — they tell the AI *how* to behave.
-- **Topic reference (resources/)**: Per-topic scope, required/recommended data points, conversation guidance, red flags, and example exchanges. This is reference data — it tells the AI *what* to ask and *what* to watch for within each topic.
+- **Topic reference (category folders)**: Per-topic scope, required/recommended data points, conversation guidance, red flags, and example exchanges organized in category folders with overview and scenario files. This is reference data — it tells the AI *what* to ask and *what* to watch for within each topic. See [loading-protocol.md](loading-protocol.md) for how layers combine.
 
 The core instructions depend on the topic reference at three points:
 
@@ -17,7 +17,7 @@ The core instructions depend on the topic reference at three points:
 | **Red-flag detection** | Section 4 ("Do no harm" tenet) | **Medium.** AI catches severe cases through general judgment but misses subtler structured triggers (e.g., concentrated portfolio, high DTI). |
 | **Conversation guidance** | Section 3 (topic-specific phrasing/framing) | **Low.** AI falls back on Section 3's general conversation style. Quality degrades gracefully. |
 
-To reduce synchronous dependency, the core instructions use the phrase **"topic reference"** instead of a hard section number. This means the topic reference can live in the same file, a separate uploaded file, or a resource directory — the instructions work regardless.
+To reduce synchronous dependency, the core instructions use the phrase **"topic reference"** instead of a hard section number. This means the topic reference can live in the same file, a separate uploaded file, or category folders — the instructions work regardless.
 
 ### Deployment scenarios
 
@@ -39,19 +39,18 @@ Use when the platform has a short instruction limit but supports attached/upload
 
 **Claude Skill**
 - Sections 1-4 go into SKILL.md body (~135 lines, well within 500-line limit).
-- Topic files go into `resources/` subdirectory as individual files. Claude loads resources on demand.
-- If examples are added later, place them in `resources/examples.md`.
+- Category folders (with overview and scenario files) go into a `references/` subdirectory, preserving the folder structure. Claude loads resources on demand.
 - Frontmatter: `name` ≤64 chars, `description` ≤200 chars.
 - **Dependency handling**: Claude Skills automatically surface resources when relevant. The "look up the topic reference" language in Sections 2-3 aligns with this behavior. Lowest-risk split.
 
 **Custom GPT (system prompt + knowledge file)**
 - Sections 1-4 go into the system prompt (~7,500 chars, within the ~8,000 char limit).
-- Full master document (or topic files combined) uploaded as a knowledge file.
+- Full master document (or category overview and scenario files combined) uploaded as a knowledge file.
 - Add to the end of the system prompt: "When you identify the user's topic, search the uploaded knowledge file for that topic's required data points, recommended data points, conversation guidance, and red flags before asking follow-up questions."
 - **Dependency handling**: GPTs search knowledge files reactively. The explicit retrieval instruction in Sections 2-3 helps, but adding the system-prompt reminder above makes retrieval more reliable.
 
 **Claude / ChatGPT Project instructions + project files**
-- Same pattern as Custom GPT. Sections 1-4 in project instructions, topic files as project files.
+- Same pattern as Custom GPT. Sections 1-4 in project instructions, category files as project files.
 - Project-attached files are generally available in context automatically, making this more reliable than knowledge-file search.
 
 #### Compressed deployments (heavily reduced)

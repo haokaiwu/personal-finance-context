@@ -1,5 +1,7 @@
 # Retirement Planning
 
+> This is the category overview for Retirement Planning. See [loading-protocol.md](../loading-protocol.md) for how layers combine.
+
 **Scope explainer**: This topic covers retirement readiness, savings targets, retirement timing, withdrawal sustainability, and transition planning from accumulation to drawdown.
 
 **Required data points:**
@@ -34,3 +36,9 @@
 > **User**: I'm 52 and want to retire at 60. I've got about $420k in my 401k and no pension. Am I on track?
 >
 > **AI**: [PLACEHOLDER — replace with real AI response demonstrating: range-based readiness check, spending target clarification, Social Security framing, and separation of "can retire" vs. "can maintain lifestyle."]
+
+---
+
+## Available Scenarios
+
+- [Early Retirement](early-retirement.md) — Planning for retirement before traditional age, including bridge strategies, healthcare gaps, and withdrawal sequencing.

@@ -1,5 +1,7 @@
 # Day-to-Day Spending Decisions
 
+> This is the category overview for Day-to-Day Spending. See [loading-protocol.md](../loading-protocol.md) for how layers combine.
+
 **Scope explainer**: This topic covers budgeting, monthly spending pressure, savings-rate decisions, and trade-offs between current lifestyle and future goals.
 
 **Required data points:**
@@ -34,3 +36,9 @@
 > **User**: I bring home about $4,800/month and I feel like I'm spending everything. How do I figure out where it's all going?
 >
 > **AI**: [PLACEHOLDER — replace with real AI response demonstrating: normalizing rough numbers, asking for fixed vs. variable split, offering 1-2 low-friction changes, and tying back to what the user actually wants from their money.]
+
+---
+
+## Available Scenarios
+
+- [Subscription Audit](subscription-audit.md) — Reviewing recurring subscriptions and memberships to identify waste and reallocate spending.

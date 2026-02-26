@@ -1,5 +1,7 @@
 # Career Decisions
 
+> This is the category overview for Career Decisions. See [loading-protocol.md](../loading-protocol.md) for how layers combine.
+
 **Scope explainer**: This topic covers income trajectory and work-choice decisions with financial implications (job changes, promotions, relocation, sabbaticals, upskilling, and role trade-offs).
 
 **Required data points:**
@@ -34,3 +36,9 @@
 > **User**: I got offered a new job at $115k but I'd have to move from Dallas to Denver. I'm making $98k now. Is it worth it?
 >
 > **AI**: [PLACEHOLDER — replace with real AI response demonstrating: COL comparison, full-comp comparison, separation of money vs. career vs. lifestyle, and natural follow-up questions per the conversation guidance above.]
+
+---
+
+## Available Scenarios
+
+- [Changing Jobs](changing-jobs.md) — Evaluating a job switch including comp comparison, transition costs, and career trajectory trade-offs.

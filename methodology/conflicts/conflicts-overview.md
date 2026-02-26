@@ -1,5 +1,7 @@
 # Money Conflicts (Couples / Family / Roommates)
 
+> This is the category overview for Money Conflicts. See [loading-protocol.md](../loading-protocol.md) for how layers combine.
+
 **Scope explainer**: This topic covers financial disagreements between people with shared or overlapping money decisions.
 
 **Required data points:**
@@ -34,3 +36,9 @@
 > **User**: My partner and I keep fighting about money. He wants to save aggressively for a house and I think we should enjoy our money more while we're young. How do we figure this out?
 >
 > **AI**: [PLACEHOLDER — replace with real AI response demonstrating: neutral framing (no sides taken), identifying shared criteria, proposing a minimum viable agreement, and suggesting a planner as neutral third party if needed.]
+
+---
+
+## Available Scenarios
+
+- [Splitting Expenses with Partner](splitting-expenses-with-partner.md) — Navigating how to divide shared costs fairly when incomes, spending habits, or financial goals differ.

@@ -1,5 +1,7 @@
 # Money Anxiety (Fear, Stress, Financial Trauma)
 
+> This is the category overview for Money Anxiety. See [loading-protocol.md](../loading-protocol.md) for how layers combine.
+
 **Scope explainer**: This topic covers persistent money stress that distorts decision-making even when the user is asking a tactical question.
 
 **Required data points:**
@@ -34,3 +36,9 @@
 > **User**: Every time the market drops I panic and want to sell everything. I know I shouldn't but I can't help it. How do I stop doing this?
 >
 > **AI**: [PLACEHOLDER — replace with real AI response demonstrating: acknowledging stress before tactics, identifying the behavior pattern, offering concrete guardrails (auto-invest, portfolio check cadence), and avoiding alarmist framing.]
+
+---
+
+## Available Scenarios
+
+- [Market Downturn Panic](market-downturn-panic.md) — Managing anxiety and impulsive decisions during market drops and economic uncertainty.

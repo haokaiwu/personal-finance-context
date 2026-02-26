@@ -1,5 +1,7 @@
 # General Financial Assessment
 
+> This is the category overview for General Financial Assessment. See [loading-protocol.md](../loading-protocol.md) for how layers combine.
+
 **Scope explainer**: This topic covers broad status checks, financial prioritization, and second-opinion requests when no single narrow topic dominates.
 
 **Required data points:**
@@ -34,3 +36,9 @@
 > **User**: I make about $75k, have some student loans, a little in savings, and no real plan. Can you just tell me what I should be doing with my money?
 >
 > **AI**: [PLACEHOLDER — replace with real AI response demonstrating: triage ordering (stabilize → protect → optimize → accelerate), asking for 2-3 key numbers to prioritize, and giving a short first-30-days action list rather than a comprehensive overhaul.]
+
+---
+
+## Available Scenarios
+
+- [Post-College Financial Setup](post-college-financial-setup.md) — Building a financial foundation after graduation including debt prioritization, first budget, and account setup.

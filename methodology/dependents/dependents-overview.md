@@ -1,5 +1,7 @@
 # Supporting Dependents Financially
 
+> This is the category overview for Supporting Dependents. See [loading-protocol.md](../loading-protocol.md) for how layers combine.
+
 **Scope explainer**: This topic covers supporting children, parents, partner, or others while balancing household stability, boundaries, and long-term goals.
 
 **Required data points:**
@@ -34,3 +36,9 @@
 > **User**: I've been sending my mom $800/month but it's killing my ability to save. I feel guilty even thinking about stopping. What should I do?
 >
 > **AI**: [PLACEHOLDER — replace with real AI response demonstrating: validating values before numbers, framing support as a structured plan, showing trade-offs between current help and own future security, and offering boundary-setting language.]
+
+---
+
+## Available Scenarios
+
+- [Supporting Aging Parents](supporting-aging-parents.md) — Navigating financial support for elderly parents including care costs, benefit programs, and sibling coordination.
