@@ -4,87 +4,39 @@ A toolkit for improving the quality of AI responses to questions with financial 
 
 ## What This Is
 
-Most AI assistants give generic financial guidance. This project provides a structured methodology that teaches AI to ask the right questions, gather personal context, and deliver advice tailored to the user's actual situation.
+People ask AI for advice even when they shouldn't.
 
-**This is a toolkit repo, not a skill repo.** It contains the source methodology, and will also contain tooling around it — test harnesses for evaluating methodology quality, platform-specific format outputs (Claude Skill, Custom GPT, Gemini Gem), and other utilities. The methodology itself is the core asset; everything else in this repo supports developing, testing, and deploying it.
+Rather than fighting human nature, this toolkit helps people do it more safely while getting better results. Namely, it fixes AI tendency to provide an answer right away without asking for important context. This default behavior is harmful for questions adjacent to personal finance because the "best answers" change dramatically depending on the context.
+
+Therefore, this toolkit is primarily a context engine, forcing the AI to ask you for critical context before answering. It incorporates this context into its answers, and it follows best practices for considering the objective facts like the amount of money in your bank account alongside how you feel.
+
+Finally, it lightly "jailbreaks" the AI to answer questions that aren't financial advice but might get censored due to overzealous guardrails. For example, "Should I save more money per month?" isn't financial advice, but it might get flagged as such.
+
+## Disclaimers
+
+**NO financial advice**. No, this won't jailbreak your AI to give you crypto ideas or stock trading tips. It has specific instructions to avoid this behavior. Rule of thumb: any specific recommendations on securities or asset allocation will be rejected in favor of general advice.
+
+**NO perfect answers**: Someday AI may be our superintelligent overlords, but that day hasn't come yet. These instructions will give you better results, but they don't guarantee perfection. Use with caution.
 
 ## Repository Structure
 
-```
-financial-context-toolkit/
-├── methodology/                    # The methodology (source of truth)
-│   ├── methodology-master-doc.md   # Core AI instructions (Sections 1–3)
-│   ├── loading-protocol.md         # Topic routing, snapshot handling, content layering
-│   ├── implementation-guide.md     # Deployment scenarios & verification
-│   ├── career/                     # One folder per financial topic
-│   │   └── career-overview.md      # Category overview (scenario files TBD)
-│   ├── spending/
-│   ├── life-events/
-│   ├── investing/
-│   ├── relationships/
-│   └── assessment/
-├── README.md
-├── LICENSE
-└── CLAUDE.md
-```
-
-## How It Works
-
-The methodology is built around a **three-section master document** ([`methodology/methodology-master-doc.md`](methodology/methodology-master-doc.md)) that works standalone or with topic-specific files:
-
-1. **Activation Criteria** — When to engage the methodology (and when not to)
-2. **Getting Sufficient Context** — Universal context collection framework: Goal, Expected role, Feelings, and Facts. Falls back to general data points and red flags when no topic-specific files are loaded.
-3. **Response Instructions** — Core advice philosophy, tone, handling missing context, and edge cases
-
-### Three-version deployment
-
-The master document is designed to work at three levels of specificity:
-
-| Version | Files loaded | Use case |
-|---------|-------------|----------|
-| **General** | `methodology-master-doc.md` only | Standalone — no topic routing needed |
-| **Category** | Master doc + `loading-protocol.md` + `{category}-overview.md` | Topic-specific data points and red flags |
-| **Full** | Master doc + `loading-protocol.md` + overview + `{scenario}.md` | Deep scenario-specific guidance |
-
-### Content model
-
-The methodology uses a **two-layer content model** for progressive specificity:
-
-| Layer | What it contains | Where it lives |
-|-------|-----------------|----------------|
-| **Category** | Shared questions, guidance, and red flags for an entire financial domain | `methodology/{category}/{category}-overview.md` |
-| **Scenario** | Deep, narrow questions for a specific situation within a category | `methodology/{category}/{scenario}.md` |
-
-Category overviews work standalone. Scenario files are additive — used alongside the overview, never instead of it. See [`methodology/loading-protocol.md`](methodology/loading-protocol.md) for the full protocol.
-
-### Categories (6)
-
-| Category | Folder |
-|----------|--------|
-| Career and Income | `methodology/career/` |
-| Lifestyle and Spending | `methodology/spending/` |
-| Liquidity and Life Events | `methodology/life-events/` |
-| Retirement and Investing | `methodology/investing/` |
-| Relationships and Teamwork on Finances | `methodology/relationships/` |
-| General Status Check | `methodology/assessment/` |
-
-## Philosophy
-
-- **Harm Reduction**: AI isn't going away. Even if Anthropic and OpenAI go bankrupt tomorrow, AI is here to stay. Rather than teach abstinence DARE style, help people do better with what they have while encouraging safer alternatives.
-- **Inherited Security Rules**: No handrolling permissions or guidelines. These instructions enhance the models as is. It takes no responsibility for security guardrails in the responses or lack thereof.
-- **No Strings Attached**: Go do what you want with it. Download it, remake it, whatever.
-- **Contributors Welcome**: Whether you're just trying it out or have some domain expertise, happy to have help.
+| Folder | What's in it |
+|--------|-------------|
+| [`methodology/`](methodology/) | The core methodology — AI instructions for gathering financial context and delivering personalized guidance. This is the main asset. |
+| [`test-harness/`](test-harness/) | CLI workbench for testing the methodology against real questions across Claude, GPT, and Gemini. Uses Google Sheets as a data store. |
 
 ## Goals
 
 - **Context-first responses** — Gather relevant financial details before answering, not after
-- **Structured topic coverage** — Consistent data-point checklists for career decisions, spending, investing, retirement, and more
+- **Direct, opinionated guidance** — Override trained hedging behavior with clear recommendations
+- **Structured topic coverage** — Consistent data-point checklists across 6 financial domains
 - **Red flag detection** — Know when to recommend a professional instead of answering
 - **Platform-agnostic** — Deploy as a Claude Skill, Custom GPT, Gemini Gem, or raw prompt
+- **Testable** — Compare with vs. without methodology across models
 
 ## Status
 
-Early stage. The core methodology is complete. Platform-specific implementations, test harness, example conversations, and contribution guidelines are coming soon.
+Early stage. The core methodology and test harness are complete. Platform-specific implementations, example conversations, and contribution guidelines are coming soon.
 
 ## License
 
