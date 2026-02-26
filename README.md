@@ -13,29 +13,42 @@ Most AI assistants give generic financial guidance. This project provides a stru
 ```
 financial-context-toolkit/
 ├── methodology/                    # The methodology (source of truth)
-│   ├── methodology-master-doc.md   # Core AI instructions (Sections 1–4)
-│   ├── loading-protocol.md         # How content layers combine
+│   ├── methodology-master-doc.md   # Core AI instructions (Sections 1–3)
+│   ├── loading-protocol.md         # Topic routing, snapshot handling, content layering
 │   ├── implementation-guide.md     # Deployment scenarios & verification
 │   ├── career/                     # One folder per financial topic
-│   │   ├── career-overview.md      # Category overview (Layer 1)
-│   │   └── changing-jobs.md        # Scenario file (Layer 2)
+│   │   └── career-overview.md      # Category overview (scenario files TBD)
 │   ├── spending/
-│   ├── purchases/
 │   ├── life-events/
-│   ├── retirement/
 │   ├── investing/
-│   ├── dependents/
-│   ├── conflicts/
-│   ├── anxiety/
+│   ├── relationships/
 │   └── assessment/
 ├── README.md
 ├── LICENSE
 └── CLAUDE.md
 ```
 
-### Methodology content model
+## How It Works
 
-The methodology uses a **two-layer content model** for progressive context sharing:
+The methodology is built around a **three-section master document** ([`methodology/methodology-master-doc.md`](methodology/methodology-master-doc.md)) that works standalone or with topic-specific files:
+
+1. **Activation Criteria** — When to engage the methodology (and when not to)
+2. **Getting Sufficient Context** — Universal context collection framework: Goal, Expected role, Feelings, and Facts. Falls back to general data points and red flags when no topic-specific files are loaded.
+3. **Response Instructions** — Core advice philosophy, tone, handling missing context, and edge cases
+
+### Three-version deployment
+
+The master document is designed to work at three levels of specificity:
+
+| Version | Files loaded | Use case |
+|---------|-------------|----------|
+| **General** | `methodology-master-doc.md` only | Standalone — no topic routing needed |
+| **Category** | Master doc + `loading-protocol.md` + `{category}-overview.md` | Topic-specific data points and red flags |
+| **Full** | Master doc + `loading-protocol.md` + overview + `{scenario}.md` | Deep scenario-specific guidance |
+
+### Content model
+
+The methodology uses a **two-layer content model** for progressive specificity:
 
 | Layer | What it contains | Where it lives |
 |-------|-----------------|----------------|
@@ -44,11 +57,16 @@ The methodology uses a **two-layer content model** for progressive context shari
 
 Category overviews work standalone. Scenario files are additive — used alongside the overview, never instead of it. See [`methodology/loading-protocol.md`](methodology/loading-protocol.md) for the full protocol.
 
-**Core AI instructions** (Sections 1–4 of [`methodology/methodology-master-doc.md`](methodology/methodology-master-doc.md)) define when to activate, how to gather context, and how to respond. They reference category/scenario files but work independently of any specific topic.
+### Categories (6)
 
-### Categories (10)
-
-Career, spending, purchases, life-events, retirement, investing, dependents, conflicts, anxiety, assessment. Each folder contains one overview file and one or more scenario files.
+| Category | Folder |
+|----------|--------|
+| Career and Income | `methodology/career/` |
+| Lifestyle and Spending | `methodology/spending/` |
+| Liquidity and Life Events | `methodology/life-events/` |
+| Retirement and Investing | `methodology/investing/` |
+| Relationships and Teamwork on Finances | `methodology/relationships/` |
+| General Status Check | `methodology/assessment/` |
 
 ## Philosophy
 
