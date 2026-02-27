@@ -1,4 +1,4 @@
-# Financial Context Toolkit
+# Personal Financial Context for AI
 
 A toolkit for improving the quality of AI responses to questions with financial implications. Built by [WorthIQ](https://worthiq.app).
 
