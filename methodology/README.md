@@ -28,7 +28,7 @@ The master document is designed to work at multiple levels of specificity:
 | **Category** | Master doc + `loading-protocol.md` + `{category}-overview.md` | Topic-specific data points and red flags |
 | **Full** | Master doc + `loading-protocol.md` + overview + `{scenario}.md` | Deep scenario-specific guidance |
 
-## Categories (6)
+## Categories (5)
 
 | Category | Folder |
 |----------|--------|
@@ -36,7 +36,6 @@ The master document is designed to work at multiple levels of specificity:
 | Lifestyle and Spending | [`spending/`](spending/) |
 | Liquidity and Life Events | [`life-events/`](life-events/) |
 | Retirement and Investing | [`investing/`](investing/) |
-| Relationships and Teamwork on Finances | [`relationships/`](relationships/) |
 | General Status Check | [`assessment/`](assessment/) |
 
 Each folder contains a category overview file. Scenario files (deeper guidance for specific situations within a category) are planned but not yet written. Category overviews work standalone. See [`loading-protocol.md`](loading-protocol.md) for how layers combine.

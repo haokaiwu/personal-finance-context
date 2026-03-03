@@ -57,5 +57,4 @@ This section applies when category files are loaded alongside the master documen
 | Lifestyle and Spending | `spending/` | `spending-overview.md` |
 | Liquidity and Life Events | `life-events/` | `life-events-overview.md` |
 | Retirement and Investing | `investing/` | `investing-overview.md` |
-| Relationships and Teamwork on Finances | `relationships/` | `relationships-overview.md` |
 | General Status Check | `assessment/` | `assessment-overview.md` |
