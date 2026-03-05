@@ -1,42 +1,73 @@
 # Personal Financial Context for AI
 
-A toolkit for improving the quality of AI responses to questions with financial implications. Built by [WorthIQ](https://worthiq.app).
+A toolkit for improving the quality of AI responses to personal finance questions. Built by [WorthIQ](https://worthiq.app).
 
 ## What This Is
 
-People ask AI for advice even when they shouldn't.
+People ask AI for advice even when they shouldn't. Rather than preaching abstinence, think of this as sex ed. This toolkit helps for personal finance or adjacent questions. For a full list of what is currently covered and what isn't, check the latest methodology doc.
 
-Rather than fighting human nature, this toolkit helps people do it more safely while getting better results. Namely, it fixes AI tendency to provide an answer right away without asking for important context. This default behavior is harmful for questions adjacent to personal finance because the "best answers" change dramatically depending on the context.
+---
 
-Therefore, this toolkit is primarily a context engine, forcing the AI to ask you for critical context before answering. It incorporates this context into its answers, and it follows best practices for considering the objective facts like the amount of money in your bank account alongside how you feel.
+## How to use it
 
-Finally, it lightly "jailbreaks" the AI to answer questions that aren't financial advice but might get censored due to overzealous guardrails. For example, "Should I save more money per month?" isn't financial advice, but it might get flagged as such.
+There are a few paths to using it:
+
+1. RECOMMENDED: Use with Claude as a Skill. See [here](instructions/claude-skill.md) for instructions.
+2. RECOMMENDED: Add methodology folder into a Claude project, a custom GPT, or similar. See [here](instructions/README.md) for instructions.
+3. Copy and paste the [general methodology doc](methodology/methodology-master-doc.md) into your system instructions. See [here](instructions/system-prompt.md) for instructions.
+
+---
+
+## Using with WorthIQ snapshots:
+
+WorthIQ Snapshots summarize your finances in a way that makes conversations easier. That includes conversations with AI. Go to the website [here](https://worthiq.app) to summarize your finances.
+
+Using them is **OPTIONAL**. The instructions work fine on their own, but the AI will be a little more annoying in asking you for context. 
+
+To use WorthIQ snapshots:
+
+1. Set up the instructions first. See the steps above.
+2. Sign up, and make a snapshot which corresponds to your question.
+3. Export the snapshot as text. 
+4. Copy the snapshot above your question.
+
+---
+
+## How does it work?
+
+Instructions tell the AI to ask you questions rather than respond immediately if you don't provide sufficient context. They also give AI a set of required and recommended data points to collect as context. Both of these instructions are helpful because it prevents the AI from jumping to conclusions based on limited information, which is particularly harmful for personal finance conversations.
+
+The instructions also gives light guidance on how to give good responses, and it lightly jailbreaks the AI in cases when it's being overly cautious. 
+
+The instructions don't activate unless it's a question that requires personalized context. It shouldn't guide behavior for factual questions, hypotheticals, and so on. The instructions are human-readable, so you can inspect it to see exactly what it's telling the AI to do.
+
+--
+
+## Support
+
+For questions, you can reach me at kai@worthiq.app. I also set up a Discord server [here].
 
 ## Disclaimers
 
 ### NO financial advice 
 
-No, this won't jailbreak your AI to give you crypto ideas or stock trading tips. It has specific instructions to avoid this behavior. Rule of thumb: any specific recommendations on securities or asset allocation will be rejected in favor of general advice.
+Instructions explicitly avoid regulated financial advice. This includes personalized asset allocation and securities recommendations. It's illegal for AI to give this advice. 
 
 ### NO perfect answers 
 
 These instructions will give you better results, but they don't guarantee perfection. Use with caution.
+
+### NO conflict resolution
+
+AI sucks at being a neutral 3rd party, so there are no instructions yet for handling money conflicts. Please contact Kai directly if you want to use instructions for this purpose.
 
 ## Repository Structure
 
 | Folder | What's in it |
 |--------|-------------|
 | [`methodology/`](methodology/) | The core methodology — AI instructions for gathering financial context and delivering personalized guidance. This is the main asset. |
+| [`instructions/`](instructions/) | Step-by-step setup guides for Claude, ChatGPT, Gemini, and generic system prompts. |
 | [`test-harness/`](test-harness/) | CLI workbench for testing the methodology against real questions across Claude, GPT, and Gemini. Uses Google Sheets as a data store. |
-
-## Goals
-
-- **Context-first responses** — Gather relevant financial details before answering, not after
-- **Direct, opinionated guidance** — Override trained hedging behavior with clear recommendations
-- **Structured topic coverage** — Consistent data-point checklists across 6 financial domains
-- **Red flag detection** — Know when to recommend a professional instead of answering
-- **Platform-agnostic** — Deploy as a Claude Skill, Custom GPT, Gemini Gem, or raw prompt
-- **Testable** — Compare with vs. without methodology across models
 
 ## Status
 
