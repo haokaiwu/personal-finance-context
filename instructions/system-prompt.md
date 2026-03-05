@@ -7,40 +7,37 @@ Paste the methodology into your AI's system prompt or instructions field. Works 
 - Access to an AI that lets you set a system prompt or custom instructions
 - The files from this repository (download or clone it)
 
+## Which version to use
+
+There are two versions of the methodology you can paste:
+
+| Version | File | Size | Best for |
+|---------|------|------|----------|
+| **Full** | [`methodology/methodology-master-doc.md`](../methodology/methodology-master-doc.md) | ~12,000 chars | Platforms with large instruction fields (API system prompts, open-source model configs) |
+| **Compressed** | [`toolkit/compressed-instructions/compressed-master.md`](../toolkit/compressed-instructions/compressed-master.md) | ~1,500 chars | Platforms with short limits (ChatGPT Custom Instructions, Grok, etc.) |
+
+The compressed version preserves the core methodology — identity framing, required/recommended data points, the answer-caveat-invitation cycle, and all five principles. It trims activation criteria and tone guidance to fit.
+
 ## Setup
 
-### 1. Copy the master doc
+### 1. Pick your version and copy it
 
-Open `methodology/methodology-master-doc.md` and copy the entire contents.
+If your platform's instruction field can hold ~12,000 characters, use the full version. If it caps out around 1,500–8,000 characters, use the compressed version.
+
+Open the file and copy the entire contents.
 
 ### 2. Paste it into your AI's instructions
 
 Where you paste depends on the platform. Look for fields labeled "system prompt," "custom instructions," "system message," or similar. Paste the full contents there.
 
-If your platform has a character limit that's too short for the full document (~12,000 characters), keep the identity framing (the text at the very top, before Section 1) and Sections 2–3. Section 1 (activation criteria) is the safest to trim.
-
-### 3. Add topic content (optional)
-
-For topic-specific questions and red flags, also paste or upload:
-
-- `methodology/loading-protocol.md`
-- `methodology/career/career-overview.md`
-- `methodology/spending/spending-overview.md`
-- `methodology/life-events/life-events-overview.md`
-- `methodology/investing/investing-overview.md`
-- `methodology/assessment/assessment-overview.md`
-
-If your platform supports file uploads, upload them separately. If it only has a text field, paste them after the master doc content.
-
-### 4. Start a conversation
+### 3. Start a conversation
 
 Ask a financial question. The AI should ask you follow-up questions before giving advice.
 
 ## Tips
 
-- The identity framing at the top of the master doc is important — it tells the AI to be direct instead of hedging. Don't skip it.
-- If you can only fit one file, `methodology-master-doc.md` is the one to use. It works well on its own.
-- Some platforms (like ChatGPT's "Custom Instructions" in settings) have very short character limits (~1,500 chars). In that case, focus on the core philosophy tenets and required data points — see the methodology for what those are.
+- The identity framing at the top of the full version (or the first paragraph of the compressed version) is the most important part — it tells the AI to be direct instead of hedging. Don't skip it.
+- If you're using the full version and need to trim, cut Section 1 (activation criteria) first. The compressed version has already done this for you.
 
 ## Test that it works
 
