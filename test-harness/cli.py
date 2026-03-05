@@ -108,23 +108,23 @@ def cmd_add_question(
 @app.command()
 def start(
     model: str = typer.Option(DEFAULT_MODEL, "--model", "-m", help="Model to test"),
-    condition: str = typer.Option(..., "--condition", "-c", help="'with' or 'without' methodology"),
+    mode: str = typer.Option(..., "--mode", help="'without', 'general', or 'category'"),
     question_id: Optional[str] = typer.Option(None, "--question-id", "-q", help="Question ID from sheet"),
     question_text: Optional[str] = typer.Option(None, "--text", "-t", help="Inline question text"),
 ):
     """Start a new test session. Sends the first message and shows the response."""
     from session import start as session_start
 
-    with console.status(f"Sending to {model} ({condition})..."):
+    with console.status(f"Sending to {model} ({mode})..."):
         session_id, resp = session_start(
             model=model,
-            condition=condition,
+            mode=mode,
             question_id=question_id,
             question_text=question_text,
         )
 
     console.print(f"\n[bold green]Session #{session_id}[/bold green] "
-                  f"({model}, {condition})\n")
+                  f"({model}, {mode})\n")
     console.print(Panel(resp.content, title="Assistant", border_style="blue"))
     console.print(f"\n[dim]Tokens: {resp.input_tokens} in / {resp.output_tokens} out[/dim]")
     console.print(f"[dim]Reply with:[/dim]  wiq reply --session {session_id} --text \"your message\"")
@@ -217,6 +217,21 @@ def cmd_check_response(
     _print_analysis("Response Quality Check", result)
 
 
+@app.command("check-category")
+def cmd_check_category(
+    session: str = typer.Option(..., "--session", "-s", help="Session ID"),
+    method: str = typer.Option("llm", "--method", help="'llm' or 'manual'"),
+    judge: str = typer.Option(DEFAULT_MODEL, "--judge", "-j", help="Judge model (for llm method)"),
+):
+    """Check which category the AI routed the question to."""
+    from analyzers import check_category
+
+    with console.status("Evaluating category routing..."):
+        result = check_category(session_id=session, method=method, judge_model=judge)
+
+    _print_analysis("Category Routing Check", result)
+
+
 # ── Listing & Comparison ─────────────────────────────────────────────
 
 @app.command("list")
@@ -275,7 +290,7 @@ def compare(
     sess_b = store.get_by_id("Sessions", session_b) or {}
 
     def format_session(turns, sess, label):
-        header = f"{label} — {sess.get('model', '?')} ({sess.get('condition', '?')})"
+        header = f"{label} — {sess.get('model', '?')} ({sess.get('mode', '?')})"
         parts = [f"[bold]{header}[/bold]\n"]
         for t in turns:
             role_color = "green" if t["role"] == "user" else "blue"
@@ -346,7 +361,7 @@ def show(
     turns.sort(key=lambda t: int(t["turn_number"]))
 
     console.print(f"\n[bold]Session #{session}[/bold] — "
-                  f"{sess['model']} ({sess['condition']}) — {sess['status']}\n")
+                  f"{sess['model']} ({sess['mode']}) — {sess['status']}\n")
 
     for t in turns:
         role_color = "green" if t["role"] == "user" else "blue"

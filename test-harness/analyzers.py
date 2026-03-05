@@ -268,3 +268,100 @@ def check_response(
     _save_analysis(session_id, "response", method, result)
     store.log_info(f"Response check for session {session_id}: {method}", session_id)
     return result
+
+
+# ── Check: Category Routing ─────────────────────────────────────────
+
+_CATEGORY_JUDGE_PROMPT = """You are evaluating whether an AI financial advisor correctly classified
+a user's question into the right financial category. The supported categories are:
+
+- career: Career and Income (job changes, salary negotiation, career transitions)
+- spending: Lifestyle and Spending (budgeting, purchases, lifestyle decisions)
+- life-events: Liquidity and Life Events (emergency funds, major life changes, liquidity needs)
+- investing: Retirement and Investing (investment strategy, retirement planning, portfolio)
+- assessment: General Status Check (overall financial health, "how am I doing?")
+- none: The AI did not route to any specific category
+
+Examine the conversation and determine which category the AI treated the question as.
+Look for evidence such as:
+- Category-specific data points being asked
+- Category-specific guidance or red flags being referenced
+- The overall framing of the conversation
+
+The user's question was:
+---
+{question}
+---
+
+The AI's first response was:
+---
+{response}
+---
+
+Return ONLY valid JSON (no markdown fences):
+{{
+  "detected_category": "career|spending|life-events|investing|assessment|none",
+  "used_category_guidance": true/false,
+  "explanation": "brief explanation of why this category was detected"
+}}"""
+
+
+def check_category(
+    session_id: str,
+    method: str = "llm",
+    judge_model: str = "claude-sonnet-4-5",
+) -> dict:
+    """Check which category the AI routed the question to.
+
+    Args:
+        session_id: session to evaluate
+        method: "manual" or "llm"
+        judge_model: which model to use as judge
+
+    Returns:
+        Analysis result dict.
+    """
+    store = get_store()
+    session = store.get_by_id("Sessions", session_id)
+    if not session:
+        raise ValueError(f"Session {session_id} not found")
+
+    turns = _get_session_turns(session_id)
+    if len(turns) < 2:
+        raise ValueError("Session needs at least a user turn and assistant turn")
+
+    question = turns[0]["content"]
+    first_response = turns[1]["content"]
+
+    # Look up expected category from Questions sheet
+    expected_category = ""
+    if session.get("question_id"):
+        q = store.get_by_id("Questions", session["question_id"])
+        if q:
+            expected_category = q.get("topic_category", "")
+
+    if method == "llm":
+        adapter = get_adapter(judge_model)
+        prompt = _CATEGORY_JUDGE_PROMPT.format(
+            question=question, response=first_response,
+        )
+        resp = adapter.send(
+            messages=[{"role": "user", "content": prompt}],
+        )
+        result = json.loads(resp.content)
+        result["expected_category"] = expected_category
+        result["match"] = (
+            expected_category == ""
+            or result.get("detected_category") == expected_category
+        )
+    else:
+        result = {
+            "question_preview": question[:200],
+            "response_preview": first_response[:500],
+            "expected_category": expected_category,
+            "note": "Use 'tag' command to record your manual evaluation.",
+        }
+
+    _save_analysis(session_id, "category", method, result)
+    store.log_info(f"Category check for session {session_id}: {method}", session_id)
+    return result

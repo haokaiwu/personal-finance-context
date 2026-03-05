@@ -17,6 +17,7 @@ GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY", "")
 
 # Methodology
 METHODOLOGY_DIR = Path(os.getenv("METHODOLOGY_DIR", "../methodology"))
+VALID_MODES = ("without", "general", "category")
 
 # Model defaults
 DEFAULT_MODEL = "claude-sonnet-4-5"

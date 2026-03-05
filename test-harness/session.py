@@ -4,14 +4,18 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Optional
 
-from config import METHODOLOGY_DIR, MAX_TURNS
+from config import METHODOLOGY_DIR, MAX_TURNS, VALID_MODES
 from models import get_adapter
 from models.base import ModelResponse
 from sheets import get_store
 
 
-def _load_methodology() -> str:
-    """Load and concatenate all .md files in the methodology directory."""
+def _load_methodology(mode: str) -> str:
+    """Load methodology files based on the deployment mode.
+
+    - general: methodology-master-doc.md only
+    - category: master doc + loading-protocol.md + all category overviews
+    """
     md_dir = Path(METHODOLOGY_DIR)
     if not md_dir.exists():
         raise FileNotFoundError(
@@ -19,23 +23,37 @@ def _load_methodology() -> str:
             "Create the directory and place your .md files in it."
         )
 
-    parts = []
-    for f in sorted(md_dir.glob("*.md")):
-        parts.append(f.read_text())
+    files: list[Path] = []
 
-    if not parts:
-        raise FileNotFoundError(
-            f"No .md files found in {md_dir.resolve()}"
-        )
+    # Master doc is always included
+    master = md_dir / "methodology-master-doc.md"
+    if not master.exists():
+        raise FileNotFoundError(f"Master doc not found: {master.resolve()}")
+    files.append(master)
 
+    if mode == "category":
+        # Loading protocol
+        protocol = md_dir / "loading-protocol.md"
+        if not protocol.exists():
+            raise FileNotFoundError(f"Loading protocol not found: {protocol.resolve()}")
+        files.append(protocol)
+
+        # All category overview files from subdirectories
+        for subdir in sorted(md_dir.iterdir()):
+            if subdir.is_dir():
+                overview = subdir / f"{subdir.name}-overview.md"
+                if overview.exists():
+                    files.append(overview)
+
+    parts = [f.read_text() for f in files]
     return "\n\n---\n\n".join(parts)
 
 
-def _build_system_prompt(condition: str) -> Optional[str]:
-    """Return system prompt for the condition, or None for control."""
-    if condition == "with":
-        return _load_methodology()
-    return None  # control: no system prompt, pure model default
+def _build_system_prompt(mode: str) -> Optional[str]:
+    """Return system prompt for the mode, or None for control."""
+    if mode == "without":
+        return None
+    return _load_methodology(mode)
 
 
 def _get_turns(session_id: str) -> list[dict]:
@@ -63,7 +81,7 @@ def _save_turn(session_id: str, turn_number: int, role: str, content: str):
 
 def start(
     model: str,
-    condition: str,
+    mode: str,
     question_id: Optional[str] = None,
     question_text: Optional[str] = None,
 ) -> tuple[str, ModelResponse]:
@@ -88,8 +106,8 @@ def start(
     else:
         raise ValueError("Provide --question-id or --question-text")
 
-    if condition not in ("with", "without"):
-        raise ValueError("Condition must be 'with' or 'without'")
+    if mode not in VALID_MODES:
+        raise ValueError(f"Mode must be one of: {', '.join(VALID_MODES)}")
 
     # Create session
     session_id = str(store.next_id("Sessions"))
@@ -98,7 +116,7 @@ def start(
         "question_id": question_id,
         "profile_id": "",
         "model": model,
-        "condition": condition,
+        "mode": mode,
         "status": "active",
         "created_at": datetime.now(timezone.utc).isoformat(),
     })
@@ -107,7 +125,7 @@ def start(
     _save_turn(session_id, 1, "user", text)
 
     # Send to model
-    system_prompt = _build_system_prompt(condition)
+    system_prompt = _build_system_prompt(mode)
     adapter = get_adapter(model)
 
     try:
@@ -122,7 +140,7 @@ def start(
     # Save assistant turn
     _save_turn(session_id, 2, "assistant", resp.content)
     store.log_info(
-        f"Session {session_id} started: model={model} condition={condition} "
+        f"Session {session_id} started: model={model} mode={mode} "
         f"tokens={resp.input_tokens}+{resp.output_tokens}",
         session_id,
     )
@@ -151,7 +169,7 @@ def reply(session_id: str, user_message: str) -> ModelResponse:
     _save_turn(session_id, turn_num, "user", user_message)
 
     messages = turns + [{"role": "user", "content": user_message}]
-    system_prompt = _build_system_prompt(session["condition"])
+    system_prompt = _build_system_prompt(session["mode"])
     adapter = get_adapter(session["model"])
 
     try:

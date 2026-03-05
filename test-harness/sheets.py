@@ -28,7 +28,7 @@ TAB_HEADERS = {
         "milestones", "is_synthetic", "notes",
     ],
     "Sessions": [
-        "id", "question_id", "profile_id", "model", "condition",
+        "id", "question_id", "profile_id", "model", "mode",
         "status", "created_at",
     ],
     "Turns": [
