@@ -1,6 +1,6 @@
 """Google (Gemini) adapter using the google-genai SDK."""
 
-from typing import Optional
+from typing import Callable, Optional
 
 from google import genai
 from google.genai import types
@@ -18,6 +18,8 @@ class GoogleAdapter(BaseAdapter):
         self,
         messages: list[dict],
         system_prompt: Optional[str] = None,
+        tools: Optional[list[dict]] = None,
+        tool_handler: Optional[Callable[[str, dict], str]] = None,
     ) -> ModelResponse:
         # Convert messages to Gemini content format
         contents = []

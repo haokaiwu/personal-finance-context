@@ -61,13 +61,23 @@ def refresh(
 @app.command("gen-profile")
 def cmd_gen_profile(
     constraints: str = typer.Option("", "--constraints", "-c", help="Persona constraints, e.g. 'late 20s, high income'"),
+    question_id: Optional[str] = typer.Option(None, "--question-id", "-q", help="Question ID — generate a persona suited to this question"),
     model: str = typer.Option(DEFAULT_MODEL, "--model", "-m", help="Model for generation"),
 ):
     """Generate a synthetic financial persona and save to Profiles sheet."""
     from generators import gen_profile
 
+    question_text = None
+    if question_id:
+        store = get_store()
+        q = store.get_by_id("Questions", question_id)
+        if not q:
+            console.print(f"[red]Question {question_id} not found.[/red]")
+            raise typer.Exit(1)
+        question_text = q["text"]
+
     with console.status("Generating profile..."):
-        profile = gen_profile(constraints=constraints, model=model)
+        profile = gen_profile(constraints=constraints, question_text=question_text, model=model)
 
     table = Table(title=f"Profile #{profile['id']}: {profile['name']}")
     table.add_column("Field", style="bold")
@@ -108,7 +118,7 @@ def cmd_add_question(
 @app.command()
 def start(
     model: str = typer.Option(DEFAULT_MODEL, "--model", "-m", help="Model to test"),
-    mode: str = typer.Option(..., "--mode", help="'without', 'general', or 'category'"),
+    mode: str = typer.Option(..., "--mode", help="'without', 'general', 'category' (dynamic, Anthropic), or 'category-all' (static, all providers)"),
     question_id: Optional[str] = typer.Option(None, "--question-id", "-q", help="Question ID from sheet"),
     question_text: Optional[str] = typer.Option(None, "--text", "-t", help="Inline question text"),
 ):
@@ -125,6 +135,8 @@ def start(
 
     console.print(f"\n[bold green]Session #{session_id}[/bold green] "
                   f"({model}, {mode})\n")
+    if resp.tools_used:
+        console.print(f"[dim]Categories loaded: {', '.join(resp.tools_used)}[/dim]\n")
     console.print(Panel(resp.content, title="Assistant", border_style="blue"))
     console.print(f"\n[dim]Tokens: {resp.input_tokens} in / {resp.output_tokens} out[/dim]")
     console.print(f"[dim]Reply with:[/dim]  wiq reply --session {session_id} --text \"your message\"")

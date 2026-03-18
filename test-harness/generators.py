@@ -24,18 +24,24 @@ Rules:
 - debts: brief summary or "none"
 - milestones: upcoming life events, or "none planned"
 
+If a question is provided, generate a persona who would realistically ask that
+question — their situation, goals, feelings, and finances should be coherent
+with why someone would ask it.
+
 If constraints are provided, incorporate them. Otherwise invent a coherent persona.
 Return ONLY valid JSON, no markdown fences."""
 
 
 def gen_profile(
     constraints: str = "",
-    model: str = "claude-sonnet-4-5",
+    question_text: str = None,
+    model: str = "claude-sonnet-4-6",
 ) -> dict:
     """Generate a synthetic persona and save it to the Profiles sheet.
 
     Args:
         constraints: free-text constraints like "late 20s, high income, anxious about money"
+        question_text: optional question to tailor the persona to
         model: which model to use for generation
 
     Returns:
@@ -45,6 +51,8 @@ def gen_profile(
     adapter = get_adapter(model)
 
     prompt = "Generate a financial persona."
+    if question_text:
+        prompt += f"\n\nThis persona should be someone who would realistically ask the following question:\n\"{question_text}\""
     if constraints:
         prompt += f"\n\nConstraints: {constraints}"
 
@@ -70,7 +78,7 @@ def gen_profile(
         "debts": data.get("debts", ""),
         "milestones": data.get("milestones", ""),
         "is_synthetic": "TRUE",
-        "notes": f"Generated with {model}. Constraints: {constraints or 'none'}",
+        "notes": f"Generated with {model}. Question: {question_text or 'none'}. Constraints: {constraints or 'none'}",
     }
 
     store.append_row("Profiles", row)

@@ -1,6 +1,6 @@
 """OpenAI (GPT / o-series) adapter."""
 
-from typing import Optional
+from typing import Callable, Optional
 
 from openai import OpenAI
 
@@ -17,6 +17,8 @@ class OpenAIAdapter(BaseAdapter):
         self,
         messages: list[dict],
         system_prompt: Optional[str] = None,
+        tools: Optional[list[dict]] = None,
+        tool_handler: Optional[Callable[[str, dict], str]] = None,
     ) -> ModelResponse:
         api_messages = []
         if system_prompt is not None:

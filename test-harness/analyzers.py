@@ -68,7 +68,7 @@ Evaluate and return ONLY valid JSON (no markdown fences):
 def check_activation(
     session_id: str,
     method: str = "llm",
-    judge_model: str = "claude-sonnet-4-5",
+    judge_model: str = "claude-sonnet-4-6",
 ) -> dict:
     """Check if the model correctly activated (or didn't) for this session.
 
@@ -168,7 +168,7 @@ The conversation:
 def check_questions(
     session_id: str,
     method: str = "llm",
-    judge_model: str = "claude-sonnet-4-5",
+    judge_model: str = "claude-sonnet-4-6",
 ) -> dict:
     """Evaluate the quality of follow-up questions in a session.
 
@@ -238,7 +238,7 @@ The full conversation:
 def check_response(
     session_id: str,
     method: str = "llm",
-    judge_model: str = "claude-sonnet-4-5",
+    judge_model: str = "claude-sonnet-4-6",
 ) -> dict:
     """Evaluate the response quality of a completed session.
 
@@ -309,7 +309,7 @@ Return ONLY valid JSON (no markdown fences):
 def check_category(
     session_id: str,
     method: str = "llm",
-    judge_model: str = "claude-sonnet-4-5",
+    judge_model: str = "claude-sonnet-4-6",
 ) -> dict:
     """Check which category the AI routed the question to.
 

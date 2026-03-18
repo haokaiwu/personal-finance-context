@@ -14,7 +14,8 @@ def _load_methodology(mode: str) -> str:
     """Load methodology files based on the deployment mode.
 
     - general: methodology-master-doc.md only
-    - category: master doc + loading-protocol.md + all category overviews
+    - category: master doc + loading-protocol.md (categories loaded via tools)
+    - category-all: master doc + loading-protocol.md + all category overviews
     """
     md_dir = Path(METHODOLOGY_DIR)
     if not md_dir.exists():
@@ -31,14 +32,15 @@ def _load_methodology(mode: str) -> str:
         raise FileNotFoundError(f"Master doc not found: {master.resolve()}")
     files.append(master)
 
-    if mode == "category":
-        # Loading protocol
+    if mode in ("category", "category-all"):
+        # Loading protocol tells the model how to use category files
         protocol = md_dir / "loading-protocol.md"
         if not protocol.exists():
             raise FileNotFoundError(f"Loading protocol not found: {protocol.resolve()}")
         files.append(protocol)
 
-        # All category overview files from subdirectories
+    if mode == "category-all":
+        # Load all category overview files into context
         for subdir in sorted(md_dir.iterdir()):
             if subdir.is_dir():
                 overview = subdir / f"{subdir.name}-overview.md"
@@ -49,11 +51,81 @@ def _load_methodology(mode: str) -> str:
     return "\n\n---\n\n".join(parts)
 
 
+# ── Category tools (for dynamic loading via tool use) ─────────────────
+
+# Map category names to their overview files
+CATEGORY_MAP = {
+    "career": "career/career-overview.md",
+    "spending": "spending/spending-overview.md",
+    "life-events": "life-events/life-events-overview.md",
+    "investing": "investing/investing-overview.md",
+    "assessment": "assessment/assessment-overview.md",
+}
+
+CATEGORY_TOOL = {
+    "name": "load_category_context",
+    "description": (
+        "Load the detailed methodology for a specific financial category. "
+        "Call this after identifying which category the user's question falls into. "
+        "You may call this multiple times for multi-category questions. "
+        "Available categories: "
+        "career (job changes, salary, career transitions), "
+        "spending (budgeting, purchases, lifestyle decisions), "
+        "life-events (emergency funds, major life changes, liquidity needs), "
+        "investing (investment strategy, retirement planning, portfolio), "
+        "assessment (overall financial health check)."
+    ),
+    "input_schema": {
+        "type": "object",
+        "properties": {
+            "category": {
+                "type": "string",
+                "enum": list(CATEGORY_MAP.keys()),
+                "description": "The financial category to load",
+            },
+        },
+        "required": ["category"],
+    },
+}
+
+
+def _category_tool_handler(tool_name: str, tool_input: dict) -> str:
+    """Handle load_category_context tool calls by returning file contents."""
+    if tool_name != "load_category_context":
+        return f"Unknown tool: {tool_name}"
+
+    category = tool_input.get("category", "")
+    rel_path = CATEGORY_MAP.get(category)
+    if not rel_path:
+        return f"Unknown category: {category}. Valid: {', '.join(CATEGORY_MAP.keys())}"
+
+    md_dir = Path(METHODOLOGY_DIR)
+    file_path = md_dir / rel_path
+    if not file_path.exists():
+        return f"Category file not found: {file_path}"
+
+    return file_path.read_text()
+
+
 def _build_system_prompt(mode: str) -> Optional[str]:
     """Return system prompt for the mode, or None for control."""
     if mode == "without":
         return None
     return _load_methodology(mode)
+
+
+def _build_tools(mode: str) -> Optional[list[dict]]:
+    """Return tool definitions for the mode, or None."""
+    if mode == "category":
+        return [CATEGORY_TOOL]
+    return None
+
+
+def _get_tool_handler(mode: str):
+    """Return the tool handler callback for the mode, or None."""
+    if mode == "category":
+        return _category_tool_handler
+    return None
 
 
 def _get_turns(session_id: str) -> list[dict]:
@@ -126,12 +198,16 @@ def start(
 
     # Send to model
     system_prompt = _build_system_prompt(mode)
+    tools = _build_tools(mode)
+    tool_handler = _get_tool_handler(mode)
     adapter = get_adapter(model)
 
     try:
         resp = adapter.send(
             messages=[{"role": "user", "content": text}],
             system_prompt=system_prompt,
+            tools=tools,
+            tool_handler=tool_handler,
         )
     except Exception as e:
         store.log_error(f"Model call failed: {e}", session_id)
@@ -139,9 +215,10 @@ def start(
 
     # Save assistant turn
     _save_turn(session_id, 2, "assistant", resp.content)
+    tools_note = f" tools={resp.tools_used}" if resp.tools_used else ""
     store.log_info(
         f"Session {session_id} started: model={model} mode={mode} "
-        f"tokens={resp.input_tokens}+{resp.output_tokens}",
+        f"tokens={resp.input_tokens}+{resp.output_tokens}{tools_note}",
         session_id,
     )
 
@@ -170,18 +247,26 @@ def reply(session_id: str, user_message: str) -> ModelResponse:
 
     messages = turns + [{"role": "user", "content": user_message}]
     system_prompt = _build_system_prompt(session["mode"])
+    tools = _build_tools(session["mode"])
+    tool_handler = _get_tool_handler(session["mode"])
     adapter = get_adapter(session["model"])
 
     try:
-        resp = adapter.send(messages=messages, system_prompt=system_prompt)
+        resp = adapter.send(
+            messages=messages,
+            system_prompt=system_prompt,
+            tools=tools,
+            tool_handler=tool_handler,
+        )
     except Exception as e:
         store.log_error(f"Model call failed on reply: {e}", session_id)
         raise
 
     _save_turn(session_id, turn_num + 1, "assistant", resp.content)
+    tools_note = f" tools={resp.tools_used}" if resp.tools_used else ""
     store.log_info(
         f"Session {session_id} reply turn={turn_num + 1} "
-        f"tokens={resp.input_tokens}+{resp.output_tokens}",
+        f"tokens={resp.input_tokens}+{resp.output_tokens}{tools_note}",
         session_id,
     )
 

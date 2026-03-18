@@ -103,7 +103,7 @@ wiq gen-profile -c "30yo married couple, dual income, anxious about house"
 ### Run sessions
 
 ```bash
-wiq start -m claude-sonnet-4-5 -c with -q 1       # Start with methodology
+wiq start -m claude-sonnet-4-6 -c with -q 1       # Start with methodology
 wiq start -m gpt-4o -c without -q 1               # Start without (control)
 wiq reply -s 1 -t "I'm 28, married, make 120k"    # Reply manually
 wiq inject -s 1 -p 3                               # Reply using profile #3
@@ -142,11 +142,11 @@ wiq add-question -t "What is a Roth IRA?" -e no
 wiq add-question -t "What should I do about my tax situation?" -e recognized_not_supported
 
 # 2. Run each through the methodology
-wiq start -m claude-sonnet-4-5 -c with -q 1
+wiq start -m claude-sonnet-4-6 -c with -q 1
 wiq check-activation -s 1
 
 # 3. Compare with vs. without
-wiq start -m claude-sonnet-4-5 -c without -q 1
+wiq start -m claude-sonnet-4-6 -c without -q 1
 wiq compare --a 1 --b 2
 ```
 
@@ -159,7 +159,7 @@ Test the full context-gathering and response cycle using a generated persona.
 wiq gen-profile -c "late 20s, single, tech salary, wants to buy a condo"
 
 # 2. Start session with a matching question
-wiq start -m claude-sonnet-4-5 -c with -q 5
+wiq start -m claude-sonnet-4-6 -c with -q 5
 
 # 3. Model asks follow-up questions → inject profile data
 wiq inject -s 3 -p 1
@@ -200,9 +200,9 @@ Generated profiles have `is_synthetic = TRUE`. You can create or edit profiles d
 
 | Name | Provider | Notes |
 |------|----------|-------|
-| `claude-sonnet-4-5` | Anthropic | Default. Good balance of quality/cost |
+| `claude-sonnet-4-6` | Anthropic | Default. Good balance of quality/cost |
 | `claude-haiku-4-5` | Anthropic | Fast/cheap for volume testing |
-| `claude-opus-4` | Anthropic | Highest quality |
+| `claude-opus-4-6` | Anthropic | Highest quality |
 | `gpt-4o` | OpenAI | Main GPT model |
 | `gpt-4o-mini` | OpenAI | Fast/cheap |
 | `o3-mini` | OpenAI | Reasoning model |

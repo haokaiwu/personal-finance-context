@@ -13,7 +13,7 @@ from typing import Optional
 import gspread
 from google.oauth2.service_account import Credentials
 
-from config import GOOGLE_SERVICE_ACCOUNT_FILE, GOOGLE_SHEET_NAME
+from config import GOOGLE_SERVICE_ACCOUNT_FILE, GOOGLE_SHEET_KEY, GOOGLE_SHEET_NAME
 
 # ── Schema: header rows for each tab ──────────────────────────────────
 
@@ -58,7 +58,10 @@ class SheetStore:
             GOOGLE_SERVICE_ACCOUNT_FILE, scopes=scopes,
         )
         self.gc = gspread.authorize(creds)
-        self.spreadsheet = self.gc.open(GOOGLE_SHEET_NAME)
+        if GOOGLE_SHEET_KEY:
+            self.spreadsheet = self.gc.open_by_key(GOOGLE_SHEET_KEY)
+        else:
+            self.spreadsheet = self.gc.open(GOOGLE_SHEET_NAME)
 
     # ── Bootstrap ─────────────────────────────────────────────────────
 

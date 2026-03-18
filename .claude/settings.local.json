@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cd C:\\\\Users\\\\haoka\\\\OneDrive\\\\Documents\\\\GitHub\\\\financial-context-toolkit:*)",
+      "Bash(mv files:*)",
+      "Bash(.venv/Scripts/pip install:*)",
+      "Bash(git remote:*)",
+      "Bash(git:*)",
+      "Bash(ls -la /c/Users/haoka/OneDrive/Documents/GitHub/personal-finance-context/test-harness/ | grep -E \"\\\\.py$|^d\")"
+    ]
+  }
+}
