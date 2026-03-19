@@ -4,14 +4,13 @@ Create a Google Gemini [Gem](https://support.google.com/gemini/answer/15236321) 
 
 ## What you need
 
-- A Google Gemini account — free accounts can create basic Gems, Gemini Advanced unlocks file uploads and the full context window
-- The files from this repository (download or clone it)
+- A Google Gemini account
 
 ## Setup
 
 ### 1. Create a new Gem
 
-Go to [gemini.google.com](https://gemini.google.com), open the side menu, and click **Gem manager** → **New Gem**.
+Go to [gemini.google.com](https://gemini.google.com), open the side menu, and click **Gems** → **New Gem**.
 
 ### 2. Set up the Gem
 
@@ -37,9 +36,7 @@ For topic-specific questions and red flags, you have two options:
 - `methodology/investing/investing-overview.md`
 - `methodology/assessment/assessment-overview.md`
 
-Gems support up to 10 files (100 MB each), so these fit easily. File uploads require Gemini Advanced.
-
-**Option B — Paste into instructions:** If you're on the free tier, append the contents of the files listed above to the end of the instructions field, after the master doc. Keep the instructions under roughly 1,500 words total for best results — very long instructions can cause the model to skip sections.
+Gems support up to 10 files (100 MB each), so these fit easily.
 
 ### 5. Save the Gem
 

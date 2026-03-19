@@ -5,16 +5,14 @@ Pick your platform and follow the guide. Each one walks you through everything f
 | Platform | Guide |
 |----------|-------|
 | Claude (Skill) | [claude-skill.md](claude-skill.md) |
-| Claude (Project) | [claude-project.md](claude-project.md) |
-| ChatGPT (Custom GPT) | [custom-gpt.md](custom-gpt.md) |
+| Claude / ChatGPT (Project) | [claude-chatgpt-project.md](claude-chatgpt-project.md) |
 | Google Gemini (Gem) | [gemini-gem.md](gemini-gem.md) |
 | Any AI (system prompt) | [system-prompt.md](system-prompt.md) |
 
 Not sure which to pick? Here's the short version:
 
 - **Claude Skill** — best option if you use [Claude Code](https://code.claude.com). It loads topic-specific content automatically.
-- **Claude Project** — good if you use [claude.ai](https://claude.ai) and want the methodology to carry across conversations. Works on free and paid plans.
-- **Custom GPT** — best option if you use ChatGPT (requires Plus, Pro, or Team).
+- **Project (Claude or ChatGPT)** — good if you use [claude.ai](https://claude.ai) or [chatgpt.com](https://chatgpt.com) and want the methodology to carry across conversations. Works on free and paid plans.
 - **Gemini Gem** — best option if you use [Google Gemini](https://gemini.google.com). Basic Gems work on the free tier; file uploads require Gemini Advanced.
 - **System prompt** — works anywhere. Copy, paste, done. Less powerful but universal.
 

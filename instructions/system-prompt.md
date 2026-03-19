@@ -1,6 +1,6 @@
 # System Prompt Setup (Any AI)
 
-Paste the methodology into your AI's system prompt or instructions field. Works with any platform. If you're using Claude, ChatGPT, or Gemini, consider the platform-specific guides instead — [Claude Project](claude-project.md), [Custom GPT](custom-gpt.md), or [Gemini Gem](gemini-gem.md) — which give you a better setup with knowledge files.
+Paste the methodology into your AI's system prompt or instructions field. Works with any platform. If you're using Claude, ChatGPT, or Gemini, consider the Project/Gem set up instead — [Project (Claude/ChatGPT)](claude-chatgpt-project.md) or [Gemini Gem](gemini-gem.md) — which give you a better setup with knowledge files.
 
 ## What you need
 

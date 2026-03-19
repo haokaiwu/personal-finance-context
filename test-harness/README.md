@@ -12,6 +12,7 @@ Google Sheet (data store)          CLI (workbench)
 │ Sessions  (append)   │◄──────────│ start / reply     │
 │ Turns     (append)   │◄──────────│   / inject        │
 │ Analysis  (append)   │◄──────────│ check-* / tag     │
+│ Batch     (append)   │◄──────────│ batch start/inject│
 │ Logs      (append)   │◄──────────│ (auto-logged)     │
 └─────────────────────┘            └──────────────────┘
                                           │
@@ -60,7 +61,7 @@ The methodology path defaults to `../methodology` (the sibling folder). Override
 5. Share the sheet with your service account email (Editor access)
 6. Run: `.venv/Scripts/python cli.py setup`
 
-This creates 6 tabs: Questions, Profiles, Sessions, Turns, Analysis, Logs.
+This creates 7 tabs: Questions, Profiles, Sessions, Turns, Analysis, Batch, Logs.
 
 ### 4. Add test data
 
@@ -100,14 +101,47 @@ wiq add-question -t "What should I do about my tax situation?" -e recognized_not
 wiq gen-profile -c "30yo married couple, dual income, anxious about house"
 ```
 
+### Deployment modes
+
+| Mode | What gets loaded | Provider handling |
+|------|-----------------|-------------------|
+| `without` | No system prompt (control) | All providers |
+| `general` | Master doc only | All providers |
+| `category` | Master doc + loading protocol (categories loaded dynamically via tool use) | Anthropic only |
+| `category-all` | Master doc + all category overviews pre-loaded (no loading protocol) | OpenAI, Google |
+
+When running batch commands with `--modes category`, non-Anthropic models automatically use `category-all` instead. The loading protocol is excluded from `category-all` because its "open file" instructions conflict with pre-loaded content.
+
 ### Run sessions
 
 ```bash
-wiq start -m claude-sonnet-4-6 -c with -q 1       # Start with methodology
-wiq start -m gpt-4o -c without -q 1               # Start without (control)
+wiq start -m snt --mode general -q 1              # Start with methodology (general)
+wiq start -m gpt --mode without -q 1              # Start without (control)
+wiq start -m ops --mode category -q 1             # Dynamic category loading (Anthropic)
+wiq start -m gpt --mode category-all -q 1         # Static category loading (all providers)
 wiq reply -s 1 -t "I'm 28, married, make 120k"    # Reply manually
 wiq inject -s 1 -p 3                               # Reply using profile #3
 wiq end -s 1                                       # Mark session complete
+```
+
+### Batch testing
+
+Run the same question across multiple models and modes in parallel.
+
+```bash
+# Start a batch (defaults: all 4 shorthand models × without,general,category)
+wiq batch start -q 1
+
+# Start with specific models/modes
+wiq batch start -q 1 -m gpt,snt --modes general,category
+
+# Inject profile replies into batch sessions (filters optional)
+wiq batch inject -b B-20260319-143022 -p 1
+wiq batch inject -b B-20260319-143022 -p 1 --modes category,general
+
+# Review and close
+wiq batch show -b B-20260319-143022
+wiq batch end -b B-20260319-143022
 ```
 
 ### Analyze
@@ -142,11 +176,11 @@ wiq add-question -t "What is a Roth IRA?" -e no
 wiq add-question -t "What should I do about my tax situation?" -e recognized_not_supported
 
 # 2. Run each through the methodology
-wiq start -m claude-sonnet-4-6 -c with -q 1
+wiq start -m snt --mode general -q 1
 wiq check-activation -s 1
 
 # 3. Compare with vs. without
-wiq start -m claude-sonnet-4-6 -c without -q 1
+wiq start -m snt --mode without -q 1
 wiq compare --a 1 --b 2
 ```
 
@@ -159,7 +193,7 @@ Test the full context-gathering and response cycle using a generated persona.
 wiq gen-profile -c "late 20s, single, tech salary, wants to buy a condo"
 
 # 2. Start session with a matching question
-wiq start -m claude-sonnet-4-6 -c with -q 5
+wiq start -m snt --mode category -q 5
 
 # 3. Model asks follow-up questions → inject profile data
 wiq inject -s 3 -p 1
@@ -173,15 +207,35 @@ wiq check-response -s 3
 wiq end -s 3
 ```
 
+### Batch comparison workflow
+
+Compare methodology performance across all models in one run.
+
+```bash
+# 1. Run batch across all models
+wiq batch start -q 5
+
+# 2. Inject profile replies into methodology sessions only
+wiq batch inject -b <batch_id> -p 1 --modes category,general
+
+# 3. Review individual sessions
+wiq batch show -b <batch_id>
+wiq show -s <session_id>
+
+# 4. Close out
+wiq batch end -b <batch_id>
+```
+
 ## Sheet Structure
 
 | Tab | Editable by | Purpose |
 |-----|-------------|---------|
 | **Questions** | You (manual or CLI) | Test questions with expected activation tags |
 | **Profiles** | You (manual or CLI) | Financial personas for `inject` — manual or AI-generated |
-| **Sessions** | CLI (append) | Session metadata (model, condition, status) |
+| **Sessions** | CLI (append) | Session metadata (model, mode, status, batch_id) |
 | **Turns** | CLI (append) | Conversation turn history |
 | **Analysis** | CLI (append) | Evaluation results (LLM-as-judge + manual tags) |
+| **Batch** | CLI (append) | Batch run results — one row per turn, columns per model×mode |
 | **Logs** | CLI (append) | Error traces and info logs |
 
 ### Questions columns
@@ -198,13 +252,15 @@ Generated profiles have `is_synthetic = TRUE`. You can create or edit profiles d
 
 ## Models
 
-| Name | Provider | Notes |
-|------|----------|-------|
-| `claude-sonnet-4-6` | Anthropic | Default. Good balance of quality/cost |
-| `claude-haiku-4-5` | Anthropic | Fast/cheap for volume testing |
-| `claude-opus-4-6` | Anthropic | Highest quality |
-| `gpt-4o` | OpenAI | Main GPT model |
-| `gpt-4o-mini` | OpenAI | Fast/cheap |
-| `o3-mini` | OpenAI | Reasoning model |
-| `gemini-2.0-flash` | Google | Fast |
-| `gemini-2.5-pro` | Google | Highest quality |
+| Name | Shorthand | Provider | Notes |
+|------|-----------|----------|-------|
+| `claude-sonnet-4-6` | `snt` | Anthropic | Default. Good balance of quality/cost |
+| `claude-haiku-4-5` | | Anthropic | Fast/cheap for volume testing |
+| `claude-opus-4-6` | `ops` | Anthropic | Highest quality |
+| `gpt-5.4` | `gpt` | OpenAI | Main GPT model |
+| `gpt-5.4-mini` | | OpenAI | Fast/cheap |
+| `gpt-5.4-nano` | | OpenAI | Fastest/cheapest |
+| `gemini-3-flash-preview` | | Google | Fast |
+| `gemini-3.1-pro-preview` | `gmn` | Google | Highest quality |
+
+Shorthands (`ops`, `snt`, `gpt`, `gmn`) can be used with `-m` flags and are the default set for batch commands.
