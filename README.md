@@ -54,7 +54,7 @@ These instructions will give you better results, but they don't guarantee perfec
 
 ### NO conflict resolution
 
-AI sucks at being a neutral 3rd party, so there are no instructions yet for handling money conflicts. Please contact me if you'd instructions for this.
+AI sucks at being a neutral 3rd party, so there are no instructions yet for handling money conflicts. Please contact me if you'd like instructions for this.
 
 ## Repository Structure
 
