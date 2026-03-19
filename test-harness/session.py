@@ -15,7 +15,7 @@ def _load_methodology(mode: str) -> str:
 
     - general: methodology-master-doc.md only
     - category: master doc + loading-protocol.md (categories loaded via tools)
-    - category-all: master doc + loading-protocol.md + all category overviews
+    - category-all: master doc + all category overviews (no loading protocol)
     """
     md_dir = Path(METHODOLOGY_DIR)
     if not md_dir.exists():
@@ -32,8 +32,11 @@ def _load_methodology(mode: str) -> str:
         raise FileNotFoundError(f"Master doc not found: {master.resolve()}")
     files.append(master)
 
-    if mode in ("category", "category-all"):
+    if mode == "category":
         # Loading protocol tells the model how to use category files
+        # Only needed for dynamic tool-loading (Anthropic); in category-all
+        # mode the files are already present and the protocol's "open file"
+        # instructions conflict with the pre-loaded content.
         protocol = md_dir / "loading-protocol.md"
         if not protocol.exists():
             raise FileNotFoundError(f"Loading protocol not found: {protocol.resolve()}")
@@ -47,8 +50,12 @@ def _load_methodology(mode: str) -> str:
                 if overview.exists():
                     files.append(overview)
 
-    parts = [f.read_text() for f in files]
-    return "\n\n---\n\n".join(parts)
+    parts = [f.read_text(encoding="utf-8") for f in files]
+    # Label each part with its filename so models can identify boundaries
+    labeled = []
+    for file, text in zip(files, parts):
+        labeled.append(f"<!-- FILE: {file.name} -->\n{text}")
+    return "\n\n---\n\n".join(labeled)
 
 
 # ── Category tools (for dynamic loading via tool use) ─────────────────

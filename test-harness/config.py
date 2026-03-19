@@ -37,5 +37,19 @@ MODEL_REGISTRY = {
     "gemini-3.1-pro-preview": {"provider": "google", "api_model": "gemini-3.1-pro-preview"},
 }
 
+# Model shorthands
+MODEL_ALIASES = {
+    "ops": "claude-opus-4-6",
+    "snt": "claude-sonnet-4-6",
+    "gpt": "gpt-5.4",
+    "gmn": "gemini-3.1-pro-preview",
+}
+
+
+def resolve_model(name: str) -> str:
+    """Resolve a model shorthand to its full name, or return as-is."""
+    return MODEL_ALIASES.get(name.lower(), name)
+
+
 # Session limits
 MAX_TURNS = 20

@@ -29,7 +29,7 @@ TAB_HEADERS = {
     ],
     "Sessions": [
         "id", "question_id", "profile_id", "model", "mode",
-        "status", "created_at",
+        "status", "created_at", "batch_id",
     ],
     "Turns": [
         "id", "session_id", "turn_number", "role", "content", "timestamp",
@@ -39,6 +39,13 @@ TAB_HEADERS = {
     ],
     "Logs": [
         "timestamp", "level", "session_id", "message", "traceback",
+    ],
+    "Batch": [
+        "batch_id", "question_id", "question_text", "turn",
+        "OPS-without", "OPS-general", "OPS-category",
+        "SNT-without", "SNT-general", "SNT-category",
+        "GPT-without", "GPT-general", "GPT-category",
+        "GMN-without", "GMN-general", "GMN-category",
     ],
 }
 
@@ -66,7 +73,10 @@ class SheetStore:
     # ── Bootstrap ─────────────────────────────────────────────────────
 
     def ensure_tabs(self):
-        """Create any missing tabs and set headers."""
+        """Create any missing tabs and set headers.
+
+        Also appends any new columns to existing tabs (handles schema migration).
+        """
         existing = {ws.title for ws in self.spreadsheet.worksheets()}
         for tab_name, headers in TAB_HEADERS.items():
             if tab_name not in existing:
@@ -76,8 +86,20 @@ class SheetStore:
                 ws.append_row(headers)
             else:
                 ws = self.spreadsheet.worksheet(tab_name)
-                if not ws.row_values(1):
+                current_headers = ws.row_values(1)
+                if not current_headers:
                     ws.append_row(headers)
+                else:
+                    # Append any new columns that don't exist yet
+                    new_cols = [h for h in headers if h not in current_headers]
+                    if new_cols:
+                        # Expand grid first if needed
+                        needed = len(current_headers) + len(new_cols)
+                        if ws.col_count < needed:
+                            ws.resize(cols=needed)
+                        start_col = len(current_headers) + 1
+                        for i, col_name in enumerate(new_cols):
+                            ws.update_cell(1, start_col + i, col_name)
 
     # ── Generic read/write ────────────────────────────────────────────
 
@@ -120,6 +142,59 @@ class SheetStore:
             return 1
         ids = [int(r["id"]) for r in rows if str(r.get("id", "")).isdigit()]
         return max(ids, default=0) + 1
+
+    # ── Filtered queries ─────────────────────────────────────────────
+
+    def get_filtered(self, tab: str, filters: dict) -> list[dict]:
+        """Return rows matching all key=value filters."""
+        rows = self.get_all(tab)
+        results = []
+        for r in rows:
+            if all(str(r.get(k, "")) == str(v) for k, v in filters.items()):
+                results.append(r)
+        return results
+
+    def write_batch_turn(
+        self,
+        batch_id: str,
+        question_id: str,
+        question_text: str,
+        turn_number: int,
+        results: dict,
+    ):
+        """Write or update a row in the Batch tab.
+
+        Args:
+            results: dict mapping column names (e.g. "OPS-general") to content.
+        """
+        ws = self.spreadsheet.worksheet("Batch")
+        headers = ws.row_values(1)
+
+        # Find existing row for this batch_id + turn
+        all_rows = ws.get_all_records()
+        target_row_idx = None
+        for i, r in enumerate(all_rows):
+            if str(r.get("batch_id", "")) == str(batch_id) and str(r.get("turn", "")) == str(turn_number):
+                target_row_idx = i + 2  # +2: 1-indexed, skip header
+                break
+
+        if target_row_idx:
+            # Update existing row — merge new results into it
+            for col_name, value in results.items():
+                if col_name in headers:
+                    col_idx = headers.index(col_name) + 1
+                    ws.update_cell(target_row_idx, col_idx, str(value)[:50000])
+        else:
+            # Append new row
+            row_data = {
+                "batch_id": batch_id,
+                "question_id": question_id,
+                "question_text": question_text,
+                "turn": turn_number,
+            }
+            row_data.update(results)
+            row = [str(row_data.get(h, ""))[:50000] for h in headers]
+            ws.append_row(row, value_input_option="RAW")
 
     # ── Refresh (clear data tabs, keep Questions & Profiles) ──────────
 

@@ -64,7 +64,7 @@ When activating, briefly signal that you'll ask a few questions first. One natur
 
 ## 2. Getting Sufficient Context
 
-Before asking follow-up questions, check whether topic-specific context files have been loaded alongside this document. If so, use their required data points, recommended data points, conversation guidance, and red flags instead of the universal context collection below.
+Before asking follow-up questions, check whether topic-specific context files have been loaded alongside this document. If so, use their required data points, recommended data points, conversation guidance, and red flags instead of the universal context collection below. If multiple category files are loaded, first identify which single category the question falls into and use only that category's data points; for multi-topic questions, use each relevant category but deduplicate — never ask for the same information twice.
 
 ### Universal Context Collection
 

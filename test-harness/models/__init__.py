@@ -1,6 +1,6 @@
 """Model factory — resolves a friendly model name to the right adapter."""
 
-from config import MODEL_REGISTRY
+from config import MODEL_REGISTRY, resolve_model
 from models.base import BaseAdapter
 from models.anthropic_adapter import AnthropicAdapter
 from models.openai_adapter import OpenAIAdapter
@@ -15,6 +15,7 @@ _PROVIDERS = {
 
 def get_adapter(model_name: str) -> BaseAdapter:
     """Return an adapter instance for the given friendly model name."""
+    model_name = resolve_model(model_name)
     if model_name not in MODEL_REGISTRY:
         available = ", ".join(sorted(MODEL_REGISTRY.keys()))
         raise ValueError(f"Unknown model '{model_name}'. Available: {available}")

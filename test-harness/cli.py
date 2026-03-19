@@ -15,7 +15,7 @@ from rich.table import Table
 from rich.syntax import Syntax
 from rich.columns import Columns
 
-from config import DEFAULT_MODEL, MODEL_REGISTRY
+from config import DEFAULT_MODEL, MODEL_ALIASES, MODEL_REGISTRY
 from sheets import get_store
 
 app = typer.Typer(
@@ -348,12 +348,17 @@ def tag(
 @app.command()
 def models():
     """List available models."""
+    # Reverse alias map: full name -> shorthand
+    alias_reverse = {v: k for k, v in MODEL_ALIASES.items()}
+
     table = Table(title="Available Models")
     table.add_column("Name", style="bold")
+    table.add_column("Shorthand", style="cyan")
     table.add_column("Provider")
     table.add_column("API Model")
     for name, info in sorted(MODEL_REGISTRY.items()):
-        table.add_row(name, info["provider"], info["api_model"])
+        shorthand = alias_reverse.get(name, "")
+        table.add_row(name, shorthand, info["provider"], info["api_model"])
     console.print(table)
 
 
@@ -423,6 +428,161 @@ def _print_analysis(title: str, result: dict):
                 style = "green" if v else "red"
             console.print(f"  [bold]{k}:[/bold] [{style}]{v}[/{style}]")
     console.print()
+
+
+# ── Batch Testing ─────────────────────────────────────────────────────
+
+batch_app = typer.Typer(name="batch", help="Batch testing across models and modes.")
+app.add_typer(batch_app)
+
+
+@batch_app.command("start")
+def batch_start_cmd(
+    question_id: str = typer.Option(..., "--question-id", "-q", help="Question ID from sheet"),
+    models_opt: str = typer.Option(
+        ",".join(MODEL_ALIASES.keys()),
+        "--models", "-m",
+        help="Comma-separated models (shorthands ok)",
+    ),
+    modes_opt: str = typer.Option(
+        "without,general,category",
+        "--modes",
+        help="Comma-separated modes",
+    ),
+):
+    """Start sessions for all model×mode combos in parallel."""
+    from batch import batch_start
+
+    models = [m.strip() for m in models_opt.split(",") if m.strip()]
+    modes = [m.strip() for m in modes_opt.split(",") if m.strip()]
+
+    console.print(f"Starting batch: {len(models)} models × {len(modes)} modes = {len(models) * len(modes)} sessions\n")
+
+    with console.status("Running batch start (parallel API calls)..."):
+        batch_id, results = batch_start(
+            question_id=question_id,
+            models=models,
+            modes=modes,
+        )
+
+    console.print(f"[bold green]Batch {batch_id}[/bold green] — {len(results)} sessions\n")
+
+    table = Table(title="Batch Results")
+    table.add_column("Session", style="bold")
+    table.add_column("Model")
+    table.add_column("Mode")
+    table.add_column("Tokens")
+    table.add_column("Tools")
+    table.add_column("Response Preview", max_width=60)
+
+    for r in sorted(results, key=lambda x: (x.get("model_short", ""), x.get("user_mode", ""))):
+        tools = ", ".join(r.get("tools_used", [])) or "-"
+        tokens = f"{r.get('input_tokens', 0)}↓ {r.get('output_tokens', 0)}↑"
+        preview = r["content"][:80].replace("\n", " ") + ("..." if len(r["content"]) > 80 else "")
+        table.add_row(
+            r["session_id"],
+            r.get("model_short", r.get("model", "?")),
+            r.get("user_mode", r.get("mode", "?")),
+            tokens,
+            tools,
+            preview,
+        )
+    console.print(table)
+
+    console.print(f"\n[dim]Next:[/dim]  wiq batch show -b {batch_id}")
+    console.print(f"[dim]Inject:[/dim] wiq batch inject -b {batch_id} -p <profile_id>")
+
+
+@batch_app.command("inject")
+def batch_inject_cmd(
+    batch_id: str = typer.Option(..., "--batch-id", "-b", help="Batch ID"),
+    profile_id: str = typer.Option(..., "--profile", "-p", help="Profile ID to inject"),
+    models_opt: Optional[str] = typer.Option(None, "--models", "-m", help="Filter: comma-separated models"),
+    modes_opt: Optional[str] = typer.Option(None, "--modes", help="Filter: comma-separated modes"),
+):
+    """Inject profile-based replies into filtered batch sessions."""
+    from batch import batch_inject
+
+    filter_models = [m.strip() for m in models_opt.split(",") if m.strip()] if models_opt else None
+    filter_modes = [m.strip() for m in modes_opt.split(",") if m.strip()] if modes_opt else None
+
+    desc = f"batch {batch_id}"
+    if filter_models:
+        desc += f", models={','.join(filter_models)}"
+    if filter_modes:
+        desc += f", modes={','.join(filter_modes)}"
+
+    with console.status(f"Injecting into {desc}..."):
+        results = batch_inject(
+            batch_id=batch_id,
+            profile_id=profile_id,
+            filter_models=filter_models,
+            filter_modes=filter_modes,
+        )
+
+    console.print(f"[green]✓[/green] Injected {len(results)} sessions\n")
+
+    table = Table(title="Inject Results")
+    table.add_column("Session", style="bold")
+    table.add_column("Model")
+    table.add_column("Mode")
+    table.add_column("Tokens")
+    table.add_column("Response Preview", max_width=60)
+
+    for r in sorted(results, key=lambda x: (x.get("model_short", ""), x.get("user_mode", ""))):
+        tokens = f"{r.get('input_tokens', 0)}↓ {r.get('output_tokens', 0)}↑"
+        preview = r["content"][:80].replace("\n", " ") + ("..." if len(r["content"]) > 80 else "")
+        table.add_row(
+            r["session_id"],
+            r.get("model_short", "?"),
+            r.get("user_mode", "?"),
+            tokens,
+            preview,
+        )
+    console.print(table)
+
+
+@batch_app.command("show")
+def batch_show_cmd(
+    batch_id: str = typer.Option(..., "--batch-id", "-b", help="Batch ID"),
+):
+    """Show summary of all sessions in a batch."""
+    from batch import batch_show
+
+    sessions = batch_show(batch_id)
+
+    table = Table(title=f"Batch {batch_id}")
+    table.add_column("Session", style="bold")
+    table.add_column("Model")
+    table.add_column("Mode")
+    table.add_column("Status")
+    table.add_column("Question ID")
+    table.add_column("Profile ID")
+    table.add_column("Created")
+
+    for s in sorted(sessions, key=lambda x: int(x.get("id", 0))):
+        status_style = "green" if s.get("status") == "active" else "dim"
+        table.add_row(
+            str(s["id"]),
+            s.get("model", ""),
+            s.get("mode", ""),
+            f"[{status_style}]{s.get('status', '')}[/{status_style}]",
+            str(s.get("question_id", "")),
+            str(s.get("profile_id", "")),
+            s.get("created_at", "")[:19],
+        )
+    console.print(table)
+
+
+@batch_app.command("end")
+def batch_end_cmd(
+    batch_id: str = typer.Option(..., "--batch-id", "-b", help="Batch ID"),
+):
+    """Mark all active sessions in a batch as complete."""
+    from batch import batch_end
+
+    count = batch_end(batch_id)
+    console.print(f"[green]✓[/green] Marked {count} sessions complete in batch {batch_id}.")
 
 
 if __name__ == "__main__":
