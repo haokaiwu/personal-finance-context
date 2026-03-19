@@ -6,7 +6,10 @@
       "Bash(.venv/Scripts/pip install:*)",
       "Bash(git remote:*)",
       "Bash(git:*)",
-      "Bash(ls -la /c/Users/haoka/OneDrive/Documents/GitHub/personal-finance-context/test-harness/ | grep -E \"\\\\.py$|^d\")"
+      "Bash(ls -la /c/Users/haoka/OneDrive/Documents/GitHub/personal-finance-context/test-harness/ | grep -E \"\\\\.py$|^d\")",
+      "Bash(cd examples:*)",
+      "Bash(python -c \"\nimport pandas as pd\ndf = pd.read_csv\\('WorthIQ Test Harness - Batch \\(1\\).csv'\\)\nb2 = df[df['batch_id'] == 'B-20260319-194340']\nprint\\('Turns:', sorted\\(b2['turn'].unique\\(\\)\\)\\)\nprint\\('Question ID:', b2['question_id'].iloc[0]\\)\nprint\\('Question text \\(first 500 chars\\):'\\)\nprint\\(b2.loc[b2['turn']==1, 'question_text'].values[0][:500]\\)\n\")",
+      "Bash(python -c \"\nimport pandas as pd\ndf = pd.read_csv\\('WorthIQ Test Harness - Batch \\(1\\).csv'\\)\nb2 = df[df['batch_id'] == 'B-20260319-194340']\nb2.to_csv\\('examples/batch-B-20260319-194340.csv', index=False\\)\nprint\\(f'Wrote {len\\(b2\\)} rows'\\)\n\")"
     ]
   }
 }

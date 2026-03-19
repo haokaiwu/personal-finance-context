@@ -93,6 +93,15 @@ def _run_single_start(
         tool_handler=tool_handler,
     )
 
+    # DEBUG: detect doubled API responses
+    half = len(resp.content) // 2
+    if half > 100 and resp.content[:half].strip() == resp.content[half:].strip():
+        print(f"[DEBUG] DOUBLED RESPONSE from {model} ({actual_mode}): "
+              f"len={len(resp.content)}, half={half}")
+    else:
+        print(f"[DEBUG] Normal response from {model} ({actual_mode}): "
+              f"len={len(resp.content)}")
+
     now = datetime.now(timezone.utc).isoformat()
 
     # Queue turn writes
