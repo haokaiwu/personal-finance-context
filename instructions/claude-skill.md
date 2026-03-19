@@ -1,54 +1,39 @@
 # Claude Skill Setup
 
-Use Claude Code's [Skill](https://code.claude.com/docs/en/skills) feature to get context-aware financial guidance that loads topic-specific content automatically.
+Add the methodology to Claude as a Skill so it automatically kicks in whenever you ask a financial question.
 
 ## What you need
 
-- [Claude Code](https://code.claude.com) installed
-- The files from this repository (download or clone it)
+- A Claude account at [claude.ai](https://claude.ai)
+- The skill zip file from this repository — download `toolkit/claude-skill.zip` (or download the whole repository and find it inside `toolkit/`)
 
 ## Setup
 
-### 1. Copy the skill folder
+### 1. Download the skill
 
-Copy `toolkit/claude-skill/` to your Claude skills directory:
+Download `toolkit/claude-skill.zip` from this repository. If you downloaded the whole repository, the zip file is already inside the `toolkit/` folder.
 
-- **Mac/Linux:** `~/.claude/skills/personal-finance/`
-- **Windows:** `%USERPROFILE%\.claude\skills\personal-finance\`
+### 2. Upload the skill to Claude
 
-The folder contains the SKILL.md (methodology + frontmatter) and all category reference files:
+1. Open [claude.ai](https://claude.ai)
+2. In the left panel, click **Customize**
+3. Click **Skills**
+4. Click the **+** button
+5. Click **Upload a skill**
+6. Drop in the `claude-skill.zip` file (or browse to select it)
 
-```
-personal-finance/
-├── SKILL.md
-├── loading-protocol.md
-├── career/
-│   └── career-overview.md
-├── spending/
-│   └── spending-overview.md
-├── life-events/
-│   └── life-events-overview.md
-├── investing/
-│   └── investing-overview.md
-└── assessment/
-    └── assessment-overview.md
-```
+### 3. Restart Claude
 
-### 2. Restart Claude
+Close Claude completely and reopen it so the skill takes effect.
 
-Close and reopen Claude (or Claude Code) so it picks up the new skill.
+### 4. Start a conversation
 
-### 3. Start a conversation
-
-Ask a financial question. Claude will auto-invoke the skill and ask you follow-up questions before giving advice.
+Ask a financial question. Claude will automatically activate the skill and ask you follow-up questions before giving advice — no need to mention the skill or do anything special.
 
 ## Tips
 
-- The `name` must be 64 characters or fewer, using only lowercase letters, numbers, and hyphens. The `description` should be concise — Claude uses it to decide when to auto-load the skill.
-- SKILL.md should stay under 500 lines. The master doc fits well within this. Detailed topic files go in supporting directories, not in SKILL.md itself.
-- You don't need `implementation-guide.md` or `methodology/README.md` — those are for developers, not for the AI.
-- If you update the methodology files later, just copy the new versions into the same locations. Claude picks up changes on the next session.
-- See the [official Skills documentation](https://code.claude.com/docs/en/skills) for advanced options like argument hints, tool permissions, and auto-invocation settings.
+- The skill activates automatically when Claude detects a financial question. You don't need to turn it on or refer to it.
+- If you update to a newer version of the skill, repeat the upload steps above — the new version will replace the old one.
 
 ## Test that it works
 
