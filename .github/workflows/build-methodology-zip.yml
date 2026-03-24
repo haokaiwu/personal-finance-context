@@ -23,16 +23,18 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Create ZIP with methodology files
+      - name: Collect files into flat directory and create ZIP
         run: |
-          zip methodology-files.zip \
-            methodology/assessment/assessment-overview.md \
-            methodology/career/career-overview.md \
-            methodology/investing/investing-overview.md \
-            methodology/life-events/life-events-overview.md \
-            methodology/spending/spending-overview.md \
-            methodology/implementation-guide.md \
-            methodology/loading-protocol.md
+          mkdir -p staging
+          cp methodology/assessment/assessment-overview.md staging/
+          cp methodology/career/career-overview.md staging/
+          cp methodology/investing/investing-overview.md staging/
+          cp methodology/life-events/life-events-overview.md staging/
+          cp methodology/spending/spending-overview.md staging/
+          cp methodology/implementation-guide.md staging/
+          cp methodology/loading-protocol.md staging/
+          cd staging
+          zip ../methodology-files.zip *.md
 
       - name: Delete existing 'latest' release (if any)
         run: gh release delete latest --yes --cleanup-tag || true
