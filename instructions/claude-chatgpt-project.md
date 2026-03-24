@@ -29,16 +29,13 @@ Paste the entire contents of `methodology/methodology-master-doc.md` into the pr
 
 That's the basics done. The AI will now ask you targeted questions before giving financial advice.
 
-### 3. Add topic files (recommended)
+### 3. Add topic files
 
-For topic-specific questions and red flags, upload these files to the project's knowledge/files section:
+First, download the zip folder of the methodology files using this link: 
 
-- `methodology/loading-protocol.md`
-- `methodology/career/career-overview.md`
-- `methodology/spending/spending-overview.md`
-- `methodology/life-events/life-events-overview.md`
-- `methodology/investing/investing-overview.md`
-- `methodology/assessment/assessment-overview.md`
+[https://github.com/haokaiwu/personal-finance-coach/releases/download/latest/methodology-files.zip](https://github.com/haokaiwu/personal-finance-coach/releases/download/latest/methodology-files.zip)
+
+Extract the files from the zip folder, and then copy the files into your project. 
 
 **Claude:** Click the **+** button next to **Files** in the knowledge panel on the right and upload the files.
 

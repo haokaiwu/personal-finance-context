@@ -13,7 +13,7 @@ Not sure which to pick? Here's the short version:
 
 - **Claude Skill** — best option if you use [Claude Code](https://code.claude.com). It loads topic-specific content automatically.
 - **Project (Claude or ChatGPT)** — good if you use [claude.ai](https://claude.ai) or [chatgpt.com](https://chatgpt.com) and want the methodology to carry across conversations. Works on free and paid plans.
-- **Gemini Gem** — best option if you use [Google Gemini](https://gemini.google.com). Basic Gems work on the free tier; file uploads require Gemini Advanced.
+- **Gemini Gem** — best option if you use [Google Gemini](https://gemini.google.com).
 - **System prompt** — works anywhere. Copy, paste, done. Less powerful but universal.
 
 ---

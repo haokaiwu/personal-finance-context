@@ -24,19 +24,15 @@ The master doc is roughly 12,000 characters, which fits within the Gem instructi
 
 That's the basics done.
 
-### 4. Add topic content (recommended)
+### 4. Add topic content
 
-For topic-specific questions and red flags, you have two options:
+First, download the zip folder of the methodology files using this link: 
 
-**Option A — Upload as files (recommended):** In the Gem editor, click **Add files** under the **Knowledge** section and upload these files:
-- `methodology/loading-protocol.md`
-- `methodology/career/career-overview.md`
-- `methodology/spending/spending-overview.md`
-- `methodology/life-events/life-events-overview.md`
-- `methodology/investing/investing-overview.md`
-- `methodology/assessment/assessment-overview.md`
+[https://github.com/haokaiwu/personal-finance-coach/releases/download/latest/methodology-files.zip](https://github.com/haokaiwu/personal-finance-coach/releases/download/latest/methodology-files.zip)
 
-Gems support up to 10 files (100 MB each), so these fit easily.
+Extract the files from the zip folder. 
+
+In the Gem editor, click **Add files** under the **Knowledge** section and upload all the files.
 
 ### 5. Save the Gem
 
