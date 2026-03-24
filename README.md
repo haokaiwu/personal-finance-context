@@ -1,6 +1,6 @@
 # AI Personal Finance Coach
 
-Turn AI into a better personal finance coach. Built by Kai from [WorthIQ](https://worthiq.app).
+Turn AI into a personal finance coach. Built by Kai from [WorthIQ](https://worthiq.app).
 
 ## What It Does
 
