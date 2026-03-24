@@ -30,5 +30,5 @@
 Each link above is a full conversation transcript. The three columns represent increasing levels of methodology applied to the model:
 
 1. **Without Guidance** — The model gets the question cold, with no methodology or context files
-2. **General Methodology** — The model receives the [universal personal finance context framework](https://github.com/haokaiwu/personal-finance-context)
+2. **General Methodology** — The model receives the [universal personal finance context framework](https://github.com/haokaiwu/personal-finance-coach)
 3. **Category-Specific** — The model receives both the universal framework and scenario-specific guidance files

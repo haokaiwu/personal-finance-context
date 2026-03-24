@@ -1,0 +1,54 @@
+name: Build Methodology ZIP
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'methodology/assessment/assessment-overview.md'
+      - 'methodology/career/career-overview.md'
+      - 'methodology/investing/investing-overview.md'
+      - 'methodology/life-events/life-events-overview.md'
+      - 'methodology/spending/spending-overview.md'
+  workflow_dispatch: # allows manual trigger from GitHub UI
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Create ZIP with methodology files
+        run: |
+          zip methodology-files.zip \
+            methodology/assessment/assessment-overview.md \
+            methodology/career/career-overview.md \
+            methodology/investing/investing-overview.md \
+            methodology/life-events/life-events-overview.md \
+            methodology/spending/spending-overview.md
+
+      - name: Delete existing 'latest' release (if any)
+        run: gh release delete latest --yes --cleanup-tag || true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create new 'latest' release with ZIP
+        run: |
+          gh release create latest methodology-files.zip \
+            --title "Methodology Files (Latest)" \
+            --notes "Auto-generated ZIP of the 5 methodology overview files. Updated on every push to main.
+
+          **Included files:**
+          - assessment-overview.md
+          - career-overview.md
+          - investing-overview.md
+          - life-events-overview.md
+          - spending-overview.md
+
+          Last updated: $(date -u '+%Y-%m-%d %H:%M UTC')" \
+            --latest
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
