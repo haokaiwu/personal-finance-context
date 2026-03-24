@@ -5,13 +5,13 @@ Add the methodology to Claude as a Skill so it automatically kicks in whenever y
 ## What you need
 
 - A Claude account at [claude.ai](https://claude.ai)
-- The skill zip file from this repository — download `toolkit/claude-skill.zip` (or download the whole repository and find it inside `toolkit/`)
+- The skill files from this repository inside toolkit/claude-skill
 
 ## Setup
 
 ### 1. Download the skill
 
-Download `toolkit/claude-skill.zip` from this repository. If you downloaded the whole repository, the zip file is already inside the `toolkit/` folder.
+Download/clone the repository. The files are inside the `toolkit/claude-skill` folder.
 
 ### 2. Upload the skill to Claude
 
@@ -20,7 +20,7 @@ Download `toolkit/claude-skill.zip` from this repository. If you downloaded the 
 3. Click **Skills**
 4. Click the **+** button
 5. Click **Upload a skill**
-6. Drop in the `claude-skill.zip` file (or browse to select it)
+6. Drop in the `claude-skill` folder (or browse to select it)
 
 ### 3. Restart Claude
 

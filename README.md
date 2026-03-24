@@ -6,10 +6,10 @@ Turn AI into a personal finance coach. Built by Kai from [WorthIQ](https://worth
 
 There are a few paths to using it:
 
-1. RECOMMENDED: Use as a Claude Skill. See [here](instructions/claude-skill.md) for instructions.
-2. RECOMMENDED: Use in a Claude Project, ChatGPT Project. See [here](instructions/claude-chatgpt-project.md) for instructions.
-3. RECOMMENDED: Use as a Gemini Gem. See [here](instructions/gemini-gem.md) for instructions.
-3. Copy and paste the [general methodology doc](methodology/methodology-master-doc.md) into your system instructions. See [here](instructions/system-prompt.md) for instructions.
+1. RECOMMENDED: Use in a Claude Project, ChatGPT Project. See [here](instructions/claude-chatgpt-project.md) for instructions.
+2. RECOMMENDED: Use as a Gemini Gem. See [here](instructions/gemini-gem.md) for instructions.
+3. RECOMMENDED: Use as a Claude Skill. See [here](instructions/claude-skill.md) for instructions.
+4. Copy and paste the [general methodology doc](methodology/methodology-master-doc.md) into your system instructions. See [here](instructions/system-prompt.md) for instructions.
 
 Ask questions with the most advanced models only. As of current release, they are Opus 4.6, Sonnect 4.6, GPT 5.4, and Gemini Pro 3.1 Preview.
 
