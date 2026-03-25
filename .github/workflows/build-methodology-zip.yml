@@ -4,7 +4,6 @@ on:
   push:
     branches: [main]
     paths:
-      - 'methodology/methodology-master-doc.md'
       - 'methodology/assessment/assessment-overview.md'
       - 'methodology/career/career-overview.md'
       - 'methodology/investing/investing-overview.md'
@@ -25,7 +24,6 @@ jobs:
       - name: Collect files into flat directory and create ZIP
         run: |
           mkdir -p staging
-          cp methodology/methodology-master-doc.md staging/
           cp methodology/assessment/assessment-overview.md staging/
           cp methodology/career/career-overview.md staging/
           cp methodology/investing/investing-overview.md staging/
@@ -50,10 +48,9 @@ jobs:
         run: |
           gh release create latest methodology-files.zip \
             --title "Methodology Files (Latest)" \
-            --notes "Auto-generated ZIP of the methodology files. Updated on every push to main.
+            --notes "Auto-generated ZIP of the methodology category files. Updated on every push to main.
 
           **Included files:**
-          - methodology-master-doc.md
           - assessment-overview.md
           - career-overview.md
           - investing-overview.md
