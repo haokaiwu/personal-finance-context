@@ -1,6 +1,6 @@
 # Career and Income
 
-> This is the category overview for Career and Income. See [loading-protocol.md](../loading-protocol.md) for how layers combine.
+> This is the category overview for Career and Income. See [README.md](../README.md) for how layers combine.
 
 **Scope explainer**: This topic covers income trajectory and work-choice decisions with financial implications (job changes, promotions, relocation, sabbaticals, upskilling, and role trade-offs).
 

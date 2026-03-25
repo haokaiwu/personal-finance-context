@@ -1,6 +1,6 @@
 # AI Personal Finance Coach
 
-Turn AI into a personal finance coach. Built by Kai from [WorthIQ](https://worthiq.app).
+Turn AI into a personal finance coach. Built by Kai, founder of [WorthIQ](https://worthiq.app).
 
 ## How to use it
 
@@ -13,13 +13,15 @@ There are a few paths to using it:
 
 Ask questions with the most advanced models only. As of current release, they are Opus 4.6, Sonnect 4.6, GPT 5.4, and Gemini Pro 3.1 Preview.
 
-## What It Does
-
-People ask AI anything these days. Personal finance is probably no different. This toolkit helps you get better responses, especially for high-impact questions.
-
 ## How Does It Work
 
 It's a set of instructions which changes your AI's behavior. Whenever you ask a personal finance question with it installed, it checks if the question requires personalized context to answer. If it does, it asks you for critical context, and then it uses this context to produce an answer. Without this instruction, AI typically jumps straight into an answer without asking for context.
+
+## Using with WorthIQ snapshots:
+
+WorthIQ Snapshots summarize your finances and make them easy to share as text. You can create a snapshot and copy-and-paste it directly into an AI chat window for better context. Go to the website [here](https://worthiq.app) to sign up.
+
+Using them is **OPTIONAL**. The instructions work fine on their own, though the AI will only ask for critical context by default.
 
 ## Why It Matters
 
@@ -27,17 +29,11 @@ Important personal finance questions require the right context to answer. People
 
 ## Examples
 
-See the examples folder for the instructions in action. 
-
-## Using with WorthIQ snapshots:
-
-WorthIQ Snapshots summarize your finances to make conversations easier. It asks you simple questions and returns a shareable image or block of text which you can copy-and-paste directly into an AI chat window. Go to the website [here](https://worthiq.app) to sign up.
-
-Using them is **OPTIONAL**. The instructions work fine on their own, though the AI will only ask for critical context by default.
+See the [examples](examples) folder for the instructions in action. 
 
 ## Support
 
-You can reach me at kai@worthiq.app. I also set up a Discord server [here]. General questions are free, but personal tech support is not. I do product research on Reddit under [u/CryptoMemeEconomy](https://www.reddit.com/user/CryptoMemeEconomy/) 
+You can reach me at kai@worthiq.app or DM me on Reddit [u/CryptoMemeEconomy](https://www.reddit.com/user/CryptoMemeEconomy/). I can also have a Discord for general conversations. 
 
 ## License
 

@@ -4,13 +4,12 @@ on:
   push:
     branches: [main]
     paths:
+      - 'methodology/methodology-master-doc.md'
       - 'methodology/assessment/assessment-overview.md'
       - 'methodology/career/career-overview.md'
       - 'methodology/investing/investing-overview.md'
       - 'methodology/life-events/life-events-overview.md'
       - 'methodology/spending/spending-overview.md'
-      - 'methodology/implementation-guide.md'
-      - 'methodology/loading-protocol.md'
   workflow_dispatch: # allows manual trigger from GitHub UI
 
 permissions:
@@ -26,13 +25,12 @@ jobs:
       - name: Collect files into flat directory and create ZIP
         run: |
           mkdir -p staging
+          cp methodology/methodology-master-doc.md staging/
           cp methodology/assessment/assessment-overview.md staging/
           cp methodology/career/career-overview.md staging/
           cp methodology/investing/investing-overview.md staging/
           cp methodology/life-events/life-events-overview.md staging/
           cp methodology/spending/spending-overview.md staging/
-          cp methodology/implementation-guide.md staging/
-          cp methodology/loading-protocol.md staging/
           cd staging
           zip ../methodology-files.zip *.md
 
@@ -55,13 +53,12 @@ jobs:
             --notes "Auto-generated ZIP of the methodology files. Updated on every push to main.
 
           **Included files:**
+          - methodology-master-doc.md
           - assessment-overview.md
           - career-overview.md
           - investing-overview.md
           - life-events-overview.md
           - spending-overview.md
-          - implementation-guide.md
-          - loading-protocol.md
 
           Last updated: $(date -u '+%Y-%m-%d %H:%M UTC')" \
             --latest

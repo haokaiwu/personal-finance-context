@@ -1,6 +1,6 @@
 # Lifestyle and Spending
 
-> This is the category overview for Lifestyle and Spending. See [loading-protocol.md](../loading-protocol.md) for how layers combine.
+> This is the category overview for Lifestyle and Spending. See [README.md](../README.md) for how layers combine.
 
 **Scope explainer**: This topic covers budgeting, cashflow, monthly spending pressure, savings-rate decisions, trade-offs between current lifestyle and future goals, and persistent money stress that distorts decision-making.
 

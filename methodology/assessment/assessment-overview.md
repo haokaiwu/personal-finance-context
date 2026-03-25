@@ -1,6 +1,6 @@
 # General Status Check
 
-> This is the category overview for General Status Check. See [loading-protocol.md](../loading-protocol.md) for how layers combine.
+> This is the category overview for General Status Check. See [README.md](../README.md) for how layers combine.
 
 **Scope explainer**: This topic covers broad status checks, financial prioritization, and second-opinion requests when no single narrow topic dominates.
 

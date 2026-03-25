@@ -1,6 +1,6 @@
 # Liquidity and Life Events
 
-> This is the category overview for Liquidity and Life Events. See [loading-protocol.md](../loading-protocol.md) for how layers combine.
+> This is the category overview for Liquidity and Life Events. See [README.md](../README.md) for how layers combine.
 
 **Scope explainer**: This topic covers significant planned spending (car, wedding, home, major milestones) and sudden financial shocks or windfalls (job loss, medical bills, divorce, inheritance). It also covers liquidity, debt payoff, and preparing for unexpected events.
 

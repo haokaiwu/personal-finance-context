@@ -1,6 +1,6 @@
 # Retirement and Investing
 
-> This is the category overview for Retirement and Investing. See [loading-protocol.md](../loading-protocol.md) for how layers combine.
+> This is the category overview for Retirement and Investing. See [README.md](../README.md) for how layers combine.
 
 **Scope explainer**: This topic covers how to invest, planning for retirement, behavior during market volatility, risk tolerance, and opening different kinds of retirement accounts.
 

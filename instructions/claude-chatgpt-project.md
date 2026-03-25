@@ -13,9 +13,9 @@ Both platforms work the same way: you set project instructions and upload knowle
 
 ### 1. Create a new project
 
-**Claude:** Go to [claude.ai](https://claude.ai), hover over the left sidebar, and click **Projects** → **New Project**. 
+**Claude:** Go to [claude.ai](https://claude.ai), hover over the left sidebar, and click **Projects** → **New Project** on Desktop. On mobile, click the plus sign. 
 
-**ChatGPT:** Go to [chatgpt.com](https://chatgpt.com), open the left sidebar, and click **Projects**.
+**ChatGPT:** Go to [chatgpt.com](https://chatgpt.com), open the left sidebar, and click **New Project**.
 
 Give it a name like "Personal Finance Coach" or whatever you want.
 
